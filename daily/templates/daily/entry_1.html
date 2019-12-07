@@ -1,0 +1,57 @@
+<h1>Setting Up Blog with Django</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p>This post explains how I setup my blog framework using the <a href="https://docs.djangoproject.com/en/2.2/intro/">Django site</a>.</p>
+<h3>Installation on Ubuntu</h3>
+<code>sudo apt-get install python3 python3-pip python3-django python-django-common</code>
+<h3>Setup Project and a Sub-Page</h3>
+<p>Set up project 'blog' and a sub-page 'daily'</p>
+<code>django-admin startproject blog
+python3 manage.py startapp daily</code>
+<h3>Adding Content</h3>
+<p>blog/settings.py</p>
+<code>
+INSTALLED_APPS = [<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'django.contrib.admin',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'django.contrib.auth',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'django.contrib.contenttypes',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'django.contrib.sessions',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'django.contrib.messages',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'django.contrib.staticfiles',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'daily.apps.DailyConfig',<br />
+]<br />
+</code>
+<p>daily/views.py</p>
+<code>
+def index(request):<br />
+&nbsp;&nbsp;&nbsp;&nbsp;return render(request, 'daily/index.html', {})
+</code>
+<p>(create daily/urls.py)</p>
+<p>daily/urls.py</p>
+<code>
+from django.urls import path<br />
+<br />
+from . import views<br />
+<br />
+urlpatterns = [<br />
+&nbsp;&nbsp;&nbsp;&nbsp;path('', views.index, name='daily/index'),]
+</code>
+<p>(create path daily/templates/daily inside the daily directory)</p>
+<p>daily/templates/daily/entry.html</p>
+<code>&lt;h1&gt;Hello World&lt;h1&gt;</code>
+<h3>Running Server</h3>
+<code>python3 manage.py runserver
+<br /><br />
+Watching for file changes with StatReloader<br />
+Performing system checks...<br />
+<br />
+System check identified no issues (0 silenced).<br />
+<br />
+You have 17 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.<br />
+Run 'python manage.py migrate' to apply them.<br />
+<br />
+November 27, 2019 - 06:51:19<br />
+Django version 2.2.7, using settings 'blog.settings'<br />
+Starting development server at http://127.0.0.1:8000/<br />
+Quit the server with CONTROL-C.<br />
+[27/Nov/2019 06:51:21] "GET /daily/ HTTP/1.1" 200 103</code>
