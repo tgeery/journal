@@ -1,0 +1,21 @@
+<h1>Setting Up Jupyter Notebooks on Windows 10 Ubuntu Subsystems</h1>
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p>This post explains how I set up Jupyter notebooks using Ubuntu subsystem on Windows 10.</p>
+<h3>Install Ubuntu Subsystem</h3>
+<p>Open 'Microsoft Store', search 'Ubuntu', and click Install.</p>
+<img src="{% static 'images/windows_store_ubuntu.PNG'%}" alt="">
+
+<h3>Install Jupyter Notebooks via Python-Pip</h3>
+<code>
+$ sudo apt-get install python3 python3-pip conda jupyter<br />
+$ python3 -m jupyter notebook<br />
+...<br />
+Copy/paste this URL into your browser when you connect for the first time,<br />
+    to login with a token:<br />
+	http://localhost:8888/?token=275b821dee82dcc6bb9d2fbbdace6e9e9a13c849a5b2afe9<br />
+</code>
+<img src="{% static 'images/jupyter_home.PNG'%}" alt="">
+<p>Click the 'New' button, Select 'Python 3'.</p>
+<img src="{% static 'images/jupyter_hello_world.PNG'%}" alt="">

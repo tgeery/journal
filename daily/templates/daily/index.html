@@ -1,4 +1,7 @@
-<h1>Blog Entries</h1>
+<h1>Journal Entries</h1>
 
-<a href="{% url 'entry_1' %}">Entry 1</a><br />
-<a href="{% url 'entry_2' %}">Entry 2</a>
+{% for entry in entries %}
+    {% with forloop.revcounter|stringformat:"i" as i %}
+    <a href={{ "entry_"|add:i }}>{{ forloop.revcounter }}. {{ entry.date }}: {{ entry.title }}<br /></a>
+    {% endwith %}
+{% endfor %}

@@ -1,0 +1,85 @@
+<h1>Investigating Python3 Error "subprocess.CalledProcessError: Command 'lsb_release -a'" in Ubuntu Subsystem</h1>
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p>DISCLAIMER: Don't know how to solve this, but removing /usr/bin/lsb_release got rid of the error.<br /><br />
+This post has some notes on my exploration of a linux/python environment error. I have no idea when/how 'lsb_release' was installed (I assume during an update/upgrade of some kind), but both apt-get and python would return erros.</p>
+<h3>Error Message</h3>
+<code>
+$ sudo python3 -m pip install django<br />
+Exception:<br />
+Traceback (most recent call last):<br />
+  File "/usr/lib/python3.5/site-packages/pip/basecommand.py", line 215, in main<br />
+    status = self.run(options, args)<br />
+  File "/usr/lib/python3.5/site-packages/pip/commands/install.py", line 272, in run<br />
+    with self._build_session(options) as session:<br />
+  File "/usr/lib/python3.5/site-packages/pip/basecommand.py", line 72, in _build_session<br />
+    insecure_hosts=options.trusted_hosts,<br />
+  File "/usr/lib/python3.5/site-packages/pip/download.py", line 329, in __init__<br />
+    self.headers["User-Agent"] = user_agent()<br />
+  File "/usr/lib/python3.5/site-packages/pip/download.py", line 93, in user_agent<br />
+    from pip._vendor import distro<br />
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/distro.py", line 1050, in <module><br />
+    _distro = LinuxDistribution()<br />
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/distro.py", line 594, in __init__<br />
+    if include_lsb else {}<br />
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/distro.py", line 931, in _get_lsb_release_info<br />
+    raise subprocess.CalledProcessError(code, cmd, stdout, stderr)<br />
+subprocess.CalledProcessError: Command 'lsb_release -a' returned non-zero exit status 1<br />
+Traceback (most recent call last):<br />
+  File "/usr/lib/python3.5/runpy.py", line 193, in _run_module_as_main<br />
+    "__main__", mod_spec)<br />
+  File "/usr/lib/python3.5/runpy.py", line 85, in _run_code<br />
+    exec(code, run_globals)<br />
+  File "/usr/lib/python3.5/site-packages/pip/__main__.py", line 19, in <module><br />
+    sys.exit(pip.main())<br />
+  File "/usr/lib/python3.5/site-packages/pip/__init__.py", line 249, in main<br />
+    return command.main(cmd_args)<br />
+  File "/usr/lib/python3.5/site-packages/pip/basecommand.py", line 251, in main<br />
+    timeout=min(5, options.timeout)) as session:<br />
+  File "/usr/lib/python3.5/site-packages/pip/basecommand.py", line 72, in _build_session<br />
+    insecure_hosts=options.trusted_hosts,<br />
+  File "/usr/lib/python3.5/site-packages/pip/download.py", line 329, in __init__<br />
+    self.headers["User-Agent"] = user_agent()<br />
+  File "/usr/lib/python3.5/site-packages/pip/download.py", line 93, in user_agent<br />
+    from pip._vendor import distro<br />
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/distro.py", line 1050, in <module><br />
+    _distro = LinuxDistribution()<br />
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/distro.py", line 594, in __init__<br />
+    if include_lsb else {}<br />
+  File "/usr/lib/python3.5/site-packages/pip/_vendor/distro.py", line 931, in _get_lsb_release_info<br />
+    raise subprocess.CalledProcessError(code, cmd, stdout, stderr)<br />
+subprocess.CalledProcessError: Command 'lsb_release -a' returned non-zero exit status 1<br /></code>
+<br />
+<h3>My System</h3>
+<p>Ubuntu Subsystem/Python3</p>
+<code>
+$ uname -a<br />
+Linux (name) 4.4.0-18362-Microsoft #476-Microsoft Fri Nov 01 16:53:00 PST 2019 x86_64 x86_64 x86_64 GNU/Linux<br /><br />
+$ python3 --version<br />
+Python 3.5.4 :: Continuum Analytics, Inc.<br /></code>
+<h3>What/Where</h3>
+<p><a href="https://refspecs.linuxfoundation.org/LSB_3.0.0/LSB-PDA/LSB-PDA/lsbrelease.html">lsb_release</a>
+- prints certain LSB (Linux Standard Base) and Distribution information.</p>
+<code>$ whereis lsb_release<br />
+lsb_release: /usr/bin/lsb_release /usr/share/man/man1/lsb_release.1.gz<br />
+(python script)<br />
+<br />
+$ python3 -m pip list<br />
+(no lsb_release)<br />
+<br />
+$ python3 -m conda list<br />
+(no lsb_release)<br />
+<br />
+$ /usr/bin/lsb_release<br />
+Traceback (most recent call last):<br />
+  File "./lsb_release", line 25, in <module><br />
+    import lsb_release<br />
+ImportError: No module named 'lsb_release'</code><br />
+<h3>My Janky Solution</h3>
+<code>$ sudo mv /usr/bin/lsb_release .<br />
+$ python3 -m pip check<br />
+No broken requirements found.<br />
+<br />
+$ sudo python3 -m pip install django<br />
+(success)<br /></code>
