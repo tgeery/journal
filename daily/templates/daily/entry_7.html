@@ -1,0 +1,63 @@
+<h1>Getting Started with a Simple Win32 Test Project in C++</h1>
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p>This post explains how I setup a very simple unit test project in visual studio. The repo is on github as <a href="https://github.com/tgeery/VsTestFramework">VsTestFramework</a></p>
+<h3>Setup a Sample Project (ExampleProject1)</h3>
+<p>Performs addition and subtraction</p>
+<fieldset><legend>Example1.h</legend>
+#pragma once<br />
+class Example1<br />
+{<br />
+public:<br />
+  Example1(void);<br />
+  ~Example1(void);<br />
+<br />
+  int Add(int a, int b);<br />
+  int Subtract(int a, int b);<br />
+};<br />
+</fieldset>
+<fieldset><legend>Example1.cpp</legend>
+#include "StdAfx.h"<br />
+#include "Example1.h"<br />
+<br />
+Example1::Example1(void)<br />
+{}<br />
+<br />
+Example1::~Example1(void)<br />
+{}<br />
+<br />
+int Example1::Add(int a, int b) {<br />
+	return a+b;<br />
+}<br />
+<br />
+int Example1::Subtract(int a, int b) {<br />
+	return a-b;<br />
+}<br />
+</fieldset>
+<h3>Setup a Native Test Project</h3>
+<p>Start Visual Studio, select 'Create a new project'.</p>
+<img src="/static/images/open_vs.png" alt="" />
+<p>Select 'Native Unit Test Project'.</p>
+<img src="/static/images/test_vs.png" alt="" />
+<fieldset><legend>UnitTest1.cpp</legend>
+[TestMethod]<br />
+void TestMethod1()<br />
+{<br />
+  Example1 ex1;<br />
+  Assert::AreEqual(3, ex1.Add(1,2));<br />
+  Assert::AreEqual(4, ex1.Add(2,2));<br />
+};<br />
+<br />
+[TestMethod]<br />
+void TestMethod2()<br />
+{<br />
+  Example1 ex1;<br />
+  Assert::AreEqual(2, ex1.Subtract(4,2));<br />
+  Assert::AreEqual(1, ex1.Subtract(3,2));<br />
+}<br />
+</fieldset>
+<p>Right click project and select 'Run tests'.</p>
+<img src="/static/images/run_vs.png" alt="" />
+<p>Verify results</p>
+<img src="/static/images/result_vs.PNG" alt="" />

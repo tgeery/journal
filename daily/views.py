@@ -21,3 +21,9 @@ def entry_4(request):
 
 def entry_5(request):
     return render(request, 'daily/entry_5.html', {})
+
+def entry_6(request):
+    return render(request, 'daily/entry_6.html', {})
+
+def entry_7(request):
+    return render(request, 'daily/entry_7.html', {})
