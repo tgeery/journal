@@ -1,0 +1,58 @@
+<h1>{{ entry.title }}</h1>
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p>This post explains a few simple assembly and compiler procedures.</p>
+<h3>Simple NASM Project</h3>
+<p>This project is follows a simple <a href="">tutorial</a> to target NASM assembly instruction. In comparison to Web assembly(WASM), LLVM intermediate representation(llvm-ir), or Microsoft Macro Assembler(MASM).</p>
+<fieldset><legend>hello.asm</legend>
+<code>
+	global    _start<br />
+<br />
+        section .text<br />
+_start: mov     rax, 1<br />
+                mov rdi, 1<br />
+                mov rsi, message<br />
+                mov rdx, 13<br />
+                syscall<br />
+                mov rax, 60<br />
+                xor rdi, rdi<br />
+                syscall<br />
+<br />
+                section .data<br />
+message: db     "Hello World!", 10<br />
+</fieldset></code>
+<code>
+$ nasm -f elf64 hello.asm<br />
+$ ld hello.o<br />
+$ ./a.out</code><br /><br />
+<h3>Simple g++ ASM Project</h3>
+<p>This is a simple project to compile C++ to assembly and then compile that to an executable.</p>
+<fieldset><legend>hello.cpp</legend>
+<code>
+#include <iostream><br />
+<br />
+int main() {<br />
+    std::cout << "Hello World!";<br />
+    return 0;<br />
+}<br />
+</fieldset></code>
+<code>
+$ g++ -S hello.cpp<br />
+$ g++ hello.s<br />
+or<br />
+$ clang++ hello.s<br />
+$ ./a.out</code><br /><br />
+<h3>Simple Rust ASM Project</h3>
+<p>This is a simple project to compile Rust to assembly and then compile that to an executable.</p>
+<fieldset><legend>hello.rs</legend>
+<code>
+fn main() {<br />
+println!("Hello World!");<br />
+}<br />
+</code></fieldset>
+<code>
+$ rustc --emit llvm-ir hello.rs<br />
+$ llc -filetype=obj hello.ll<br />
+$ clang++ hello.o<br/></code>
+
