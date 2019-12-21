@@ -1,4 +1,10 @@
-<h1>{{ entry.title }}</h1>
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
 <p>Writing CPython bindings in C++ referencing <a href="https://tutorialedge.net/python/python-c-extensions-tutorial/">this site</a>.</p>
+{% endblock %}

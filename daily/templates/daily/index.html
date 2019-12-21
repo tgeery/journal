@@ -1,7 +1,13 @@
-<h1>Journal Entries</h1>
+{% extends "generic.html" %}
 
+{% block header %}
+Journal Entries
+{% endblock %}
+
+{% block content %}
 {% for entry in entries %}
     {% with forloop.revcounter|stringformat:"i" as i %}
     <a href={{ "entry_"|add:i }}>{{ forloop.revcounter }}. {{ entry.date }}: {{ entry.title }}<br /></a>
     {% endwith %}
 {% endfor %}
+{% endblock %}

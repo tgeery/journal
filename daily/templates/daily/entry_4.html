@@ -1,7 +1,12 @@
-<h1>{{ entry.title }}</h1>
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
 
 {% load staticfiles %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
 <p>This post explains how I set up Jupyter notebooks using Ubuntu subsystem on Windows 10.</p>
 <h3>Install Ubuntu Subsystem</h3>
 <p>Open 'Microsoft Store', search 'Ubuntu', and click Install.</p>
@@ -19,3 +24,4 @@ Copy/paste this URL into your browser when you connect for the first time,<br />
 <img src="{% static 'images/jupyter_home.PNG'%}" alt="">
 <p>Click the 'New' button, Select 'Python 3'.</p>
 <img src="{% static 'images/jupyter_hello_world.PNG'%}" alt="">
+{% endblock %}

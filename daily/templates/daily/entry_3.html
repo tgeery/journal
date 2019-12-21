@@ -1,7 +1,12 @@
-<h1>{{ entry.title }}</h1>
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
 
 {% load staticfiles %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
 <p>This post explains how I set up a raspberry pi to provide <a href="https://www.tecmint.com/setup-linux-as-router/">internet via ethernet</a> and providing an ad-blocker using <a href="https://pi-hole.net/">PiHole</a>.</p>
 <h3>Configuration to forward internet from Raspberry Pi to computer</h3>
 <code>$ uname -a<br />
@@ -56,3 +61,4 @@ $ sudo bash basic-install.sh</code><br />
 <p>In web browser visit 'pi.hole.com'</p>
 <img src="{% static 'images/raspberry_pi_admin.PNG'%}" alt=""><br />
 <br />
+{% endblock %}

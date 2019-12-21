@@ -1,6 +1,10 @@
-<h1>{{ entry.title }}</h1>
+{% extends "generic.html" %}
+{% block header %}
+{{ entry.title }}
+{% endblock %}
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
 <p>This post explains how I setup my blog framework using the <a href="https://docs.djangoproject.com/en/2.2/intro/">Django site</a>.</p>
 <h3>Installation on Ubuntu</h3>
 <code>sudo apt-get install python3 python3-pip python3-django python-django-common</code>
@@ -55,3 +59,4 @@ Django version 2.2.7, using settings 'blog.settings'<br />
 Starting development server at http://127.0.0.1:8000/<br />
 Quit the server with CONTROL-C.<br />
 [27/Nov/2019 06:51:21] "GET /daily/ HTTP/1.1" 200 103</code>
+{% endblock %}
