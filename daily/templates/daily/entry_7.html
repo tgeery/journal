@@ -1,7 +1,10 @@
+{% extends "generic.html" %}
+
 <h1>{{ entry.title }}</h1>
 
 {% load staticfiles %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
 <p>This post explains how I setup a very simple unit test project in visual studio. The repo is on github as <a href="https://github.com/tgeery/VsTestFramework">VsTestFramework</a></p>
 <h3>Setup a Sample Project (ExampleProject1)</h3>
 <p>Performs addition and subtraction</p>
@@ -61,3 +64,4 @@ void TestMethod2()<br />
 <img src="/static/images/run_vs.png" alt="" />
 <p>Verify results</p>
 <img src="/static/images/result_vs.PNG" alt="" />
+{% endblock %}

@@ -14,16 +14,23 @@
 </head>
 
 <body>
+	<nav class="navbar bg-dark">
+		<a class="navbar-brand" style="color:white;" href="/">Home</a>
+		<form class="form-inline">
+			<input class="form-control" type="search" placeholder="Search">
+			<button class="btn btn-outline-success mx-2" type="submit">Search</button>
+		</form>
+	</nav>
 	<div class="jumbotron" style="margin:0;">
 		<h1 style="text-align:center;">{% block header %}My Blog{% endblock %}</h1>
 	</div>
 	<div class="contianer-fluid" style="margin:0;">
 		<div class="row">
-			<div class="col-1" data-spy="scroll" data-offset="0">
+			<div class="col-2" data-spy="scroll" data-offset="0">
 				<a class="nav-link" href="/daily">Journals</a>
     			<a class="nav-link" href="/daily">Other</a>
 			</div>
-			<div class="col-11 border-left">
+			<div class="col-10 border-left">
 				<p class="text-justify">{% block content %}{% endblock %}</p>
 			</div>
 		</div>

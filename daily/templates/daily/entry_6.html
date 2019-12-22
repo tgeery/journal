@@ -1,7 +1,11 @@
+{% extends "generic.html" %}
+
 <h1>{{ entry.title }}</h1>
 
 {% load staticfiles %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{% block content %}
 <a href="entry_3">Continuing from entry_3.</a><br /><br />
 <p>This post explains how I setup a samba server to store data from my desktop computer.</p>
 <h3>Installation</h3>
@@ -34,3 +38,4 @@ workgroup = WORKGROUP<br />
 <img src="/static/images/map_path.PNG" alt="" />
 <p>Verify contents on SSD are available</p>
 <img src="/static/images/map_drive.png" alt="" />
+{% endblock %}

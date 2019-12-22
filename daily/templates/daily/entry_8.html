@@ -1,7 +1,10 @@
+{% extends "generic.html" %}
+
 <h1>{{ entry.title }}</h1>
 
 {% load staticfiles %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
 <p>This post explains a few simple assembly and compiler procedures.</p>
 <h3>Simple NASM Project</h3>
 <p>This project is follows a simple <a href="">tutorial</a> to target NASM assembly instruction. In comparison to Web assembly(WASM), LLVM intermediate representation(llvm-ir), or Microsoft Macro Assembler(MASM).</p>
@@ -55,4 +58,4 @@ println!("Hello World!");<br />
 $ rustc --emit llvm-ir hello.rs<br />
 $ llc -filetype=obj hello.ll<br />
 $ clang++ hello.o<br/></code>
-
+{% endblock %}
