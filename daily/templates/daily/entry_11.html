@@ -1,0 +1,19 @@
+{% extends "generic.html" %}
+
+<h1>{{ entry.title }}</h1>
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry explains I how installed Unreal Engine on Ubuntu using the instructions from this <a href="https://github.com/EpicGames/UnrealEngine/blob/release/Engine/Build/BatchFiles/Linux/README.md">readme</a>.</p><br />
+<p>Create an Epic Games account and request to be an Epic Games developer.<br />
+Clone the repository from EpicGames UnrealEngine project:</p><br />
+<code>
+$ git clone https://github.com/EpicGames/UnrealEngine.git<br />
+$ cd UnrealEngine<br />
+$ bash Setup.sh<br />
+$ bash GenerateProjectFiles.sh<br />
+$ ./Engine/Binaries/Linux/UE4Editor<br />
+</code>
+<img src="{% static 'images/unreal_main.png'%}" alt="">
+{% endblock %}
