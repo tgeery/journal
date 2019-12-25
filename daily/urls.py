@@ -15,4 +15,5 @@ urlpatterns = [
 	path('entry_9', views.entry_9, name='entry_9'),
 	path('entry_10', views.entry_10, name='entry_10'),
 	path('entry_11', views.entry_11, name='entry_11'),
+	path('entry_12', views.entry_12, name='entry_12'),
         ]
