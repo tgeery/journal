@@ -11,28 +11,26 @@
 <a href="entry_3">Continuing from entry_3.</a><br /><br />
 <p>This post explains how I setup a samba server to store data from my desktop computer.</p>
 <h3>Installation</h3>
-<code>
-$ sudo apt-get install samba samba-common-bin<br />
-</code>
+<pre><code class="bash">$ sudo apt-get install samba samba-common-bin</code></pre>
 <h3>Configuration file</h3>
 <fieldset><legend>/etc/samba/smb.conf</legend>
-workgroup = WORKGROUP<br />
-<br />
-[PiShare]<br />
- comment=Raspberry Pi Shared Folder<br />
- path=/media/pi/Demo_Backup<br />
- browseable=Yes<br />
- writeable=Yes<br />
- only guest=no<br />
- create mask=0777<br />
- directory mask=0777<br />
- public=yes<br />
- Guest ok=yes<br />
+workgroup = WORKGROUP
+
+[PiShare]
+ comment=Raspberry Pi Shared Folder
+ path=/media/pi/Demo_Backup
+ browseable=Yes
+ writeable=Yes
+ only guest=no
+ create mask=0777
+ directory mask=0777
+ public=yes
+ Guest ok=yes
 </fieldset>
 <h3>Mount External SSD to Raspberry PI</h3>
 <p>Plug-in SSD to USB port</p>
 <p>Verify SSD is mounted at /media/pi/Demo_Backup</p>
-<code>$ sudo /etc/init.d/samba restart</code>
+<pre><code class="bash">$ sudo /etc/init.d/samba restart</code></pre>
 <h3>Setup Windows Mapped Drive</h3>
 <p>In Windows Explorer, right click 'Network'.</p>
 <img src="/static/images/new_map.png" alt="" />

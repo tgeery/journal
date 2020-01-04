@@ -13,43 +13,40 @@
 <img src="{% static 'images/bootstrap_format_layout.png' %}" alt="">
 <h3>Setup</h3>
 <p>Link to bootsrap:</p>
-<code>
-&lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8      T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"&gt;<br />
-&lt;script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoR      SJoZ+n" crossorigin="anonymous"&gt;&lt;/script&gt;<br />
-&lt;script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV      9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"&gt;&lt;/script&gt;<br />
-&lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd      1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"&gt;&lt;/script&gt;<br />
-</code><br />
+<pre><code class="css">&lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"&gt;
+&lt;script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"&gt;&lt;/script&gt;
+</code></pre>
 <h3>Top-bar</h3>
 <p>This will be identified as a navigation bar with a dark background, containing a button to redirect to the home page and run a search.</p>
-<code>
-&lt;nav class="navbar bg-dark"&gt;<br />
-&nbsp;&lt;a class="navbar-brand" style="color:white;" href="/"&gt;Home&lt;/a&gt;<br />
-&nbsp;&lt;form class="form-inline"&gt;<br />
-&nbsp;&nbsp;&lt;input class="form-control" type="search" placeholder="Search"&gt;<br />
-&nbsp;&nbsp;&lt;button class="btn btn-outline-success mx-2" type="submit"&gt;Search&lt;/button&gt;<br />
-&nbsp;&lt;/form&gt;<br />
+<pre><code class="html">&lt;nav class="navbar bg-dark"&gt;
+&nbsp;&lt;a class="navbar-brand" style="color:white;" href="/"&gt;Home&lt;/a&gt;
+&nbsp;&lt;form class="form-inline"&gt;
+&nbsp;&nbsp;&lt;input class="form-control" type="search" placeholder="Search"&gt;
+&nbsp;&nbsp;&lt;button class="btn btn-outline-success mx-2" type="submit"&gt;Search&lt;/button&gt;
+&nbsp;&lt;/form&gt;
 &lt;/nav&gt;
-</code>
+</code></pre>
 <h3>Jumbotron</h3>
 <p>The banner(or jumbotron) at the top will include the title of the page.</p>
-<code>
-&lt;div class="jumbotron" style="margin:0;"&gt;<br />
-&nbsp;&nbsp;&lt;h1 style="text-align:center;"&lt;{% block header %}My Blog{% endblock %}&lt;/h1&gt;<br />
-&lt;/div&gt;<br />
-</code>
+<pre><code class="html">&lt;div class="jumbotron" style="margin:0;"&gt;
+  &lt;h1 style="text-align:center;"&gt;{ % block header %}My Blog{ % endblock %}&lt;/h1&gt;
+&lt;/div&gt;
+</code></pre>
 <h3>Sidebar & Content</h3>
 <p>The sidebar and content will both sit in the same container, within a row of 12 units split between two columns(2+10).</p>
-<code>
-&lt;div class="contianer-fluid" style="margin:0;"&gt;<br/>
-&nbsp;&lt;div class="row"&gt;<br />
-&nbsp;&nbsp;&lt;div class="col-2" data-spy="scroll" data-offset="0"&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;a class="nav-link" href="/daily"&gt;Item 1&lt;/a&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;a class="nav-link" href="/daily"&gt;Item 2&lt;/a&gt;<br />
-&nbsp;&nbsp;&lt;/div&gt;<br />
-&nbsp;&lt;/div&gt;<br />
-&nbsp;&lt;div class="col-10 border-left"&gt;<br />
-&nbsp;&nbsp;&lt;p class="text-justify"&gt;content&lt;/p&gt;<br />
-&nbsp;&lt;/div&gt;<br />
-&lt;/div&gt;<br />
-</code>
+<pre><code class="html">
+&lt;div class="contianer-fluid" style="margin:0;"&gt
+&nbsp;&lt;div class="row"&gt;
+&nbsp;&nbsp;&lt;div class="col-2" data-spy="scroll" data-offset="0"&gt;
+&nbsp;&nbsp;&nbsp;&lt;a class="nav-link" href="/daily"&gt;Item 1&lt;/a&gt;
+&nbsp;&nbsp;&nbsp;&lt;a class="nav-link" href="/daily"&gt;Item 2&lt;/a&gt;
+&nbsp;&nbsp;&lt;/div&gt;
+&nbsp;&lt;/div&gt;
+&nbsp;&lt;div class="col-10 border-left"&gt;
+&nbsp;&nbsp;&lt;p class="text-justify"&gt;content&lt;/p&gt;
+&nbsp;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
 {% endblock %}

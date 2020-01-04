@@ -11,105 +11,97 @@
 <h3>Setting Up a Go project</h3>
 <p>Write simple hello world and verify it runs</p>
 <fieldset><legend>hello.go</legend>
-<code>
-package main<br />
-<br />
-import "fmt"<br />
-<br />
-func hello() string {<br />
-&nbsp;&nbsp;return "Hello World!"<br />
-}<br />
-<br />
-func main() {<br />
-&nbsp;&nbsp;fmt.Printf(hello())<br />
-}<br />
-</code>
+<pre><code class="go">package main
+
+import "fmt"
+
+func hello() string {
+&nbsp;&nbsp;return "Hello World!"
+}
+
+func main() {
+&nbsp;&nbsp;fmt.Printf(hello())
+}
+</code></pre>
 </fieldset>
-<code>
-$ go run hello.go<br />
-Hello World!<br />
-</code><br />
+<pre><code class="go">$ go run hello.go
+Hello World!
+</code></pre>
 <p>Verify the test passes</p>
 <fieldset><legend>hello_test.go</legend>
-<code>
-package main<br />
-<br />
-import "testing"<br />
-<br />
-func TestHello(t *testing.T) {<br />
-&nbsp;&nbsp;var s = hello()<br />
-&nbsp;&nbsp;if s != "Hello World!" {<br />
-&nbsp;&nbsp;&nbsp;&nbsp;t.Error("Incorrect string value ", s)<br />
-&nbsp;&nbsp;}<br />
-}<br />
-</code>
+<pre><code class="go">package main
+
+import "testing"
+
+func TestHello(t *testing.T) {
+  var s = hello()
+  if s != "Hello World!" {
+    t.Error("Incorrect string value ", s)
+  }
+}
+</code></pre>
 </fieldset>
-<code>
-$ go test<br />
-PASS<br />
-ok  	_/home/some_path/hello-world	0.001s<br />
-</code><br />
+<pre><code class="bash">$ go test
+PASS
+ok  	_/home/some_path/hello-world	0.001s
+</code></pre>
 <p>Setup a simple actions YAML file to build the project using an ubuntu image and push it.</p>
 <fieldset><legend>.github/workflows/go.yml</legend>
-<code>
-name: Go<br />
-on: [push]<br />
-jobs:<br />
-<br />
-  build:<br />
-    name: Build<br />
-    runs-on: ubuntu-latest<br />
-    steps:<br />
-<br />
-    - name: Set up Go 1.13<br />
-      uses: actions/setup-go@v1<br />
-      with:<br />
-        go-version: 1.13<br />
-      id: go<br />
-<br />
-    - name: Check out code int the Go module directory<br />
-      uses: actions/checkout@v1<br />
-<br />
-    - name: Build<br />
-      run: go build -v .<br />
-</code>
-</fieldset><br />
+<pre><code class="yml">name: Go
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code int the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Build
+      run: go build -v .
+</code></pre>
+</fieldset>
 <p>Select 'Actions' tab(may need to sign up as Github developer).</p>
 <img src="{% static 'images/actions_tab.png'%}" alt="">
 <p>Verify the results pass.</p>
 <img src="{% static 'images/actions_results.png'%}" alt=""><br />
 <h3>Setting Up act Tool</h3>
 <p>Clone, build and install act project from https://github.com/nektos/act.git</p>
-<code>
-$ git clone https://github.com/nektos/act.git<br />
-$ make<br />
-$ make install<br />
-go run -mod=vendor main.go -ra check<br />
-cat: /path/.config/github/token: No such file or directory<br />
-INFO[0000] using github ref: refs/heads/master          <br />
-[check] docker build -t check:2e4de98 /path/.github/actions/check<br />
-[check] docker run image=check:2e4de98 entrypoint=[] cmd=[]<br />
-?   	github.com/nektos/act	[no test files]<br />
-ok  	github.com/nektos/act/actions	0.005s	coverage: 22.6% of statements<br />
-?   	github.com/nektos/act/cmd	[no test files]<br />
-ok  	github.com/nektos/act/common	0.056s	coverage: 39.1% of statements<br />
-ok  	github.com/nektos/act/container	0.004s	coverage: 3.0% of statements<br />
-$ sudo make install<br />
-</code><br />
+<pre><code class="bash">$ git clone https://github.com/nektos/act.git
+$ make
+$ make install
+go run -mod=vendor main.go -ra check
+cat: /path/.config/github/token: No such file or directory
+INFO[0000] using github ref: refs/heads/master          
+[check] docker build -t check:2e4de98 /path/.github/actions/check
+[check] docker run image=check:2e4de98 entrypoint=[] cmd=[]
+?   	github.com/nektos/act	[no test files]
+ok  	github.com/nektos/act/actions	0.005s	coverage: 22.6% of statements
+?   	github.com/nektos/act/cmd	[no test files]
+ok  	github.com/nektos/act/common	0.056s	coverage: 39.1% of statements
+ok  	github.com/nektos/act/container	0.004s	coverage: 3.0% of statements
+$ sudo make install
+</code></pre>
 <p>Write an act file.</p>
 <fieldset><legend>.github/main.workflow</legend>
-<code>
-action "test" {<br />
-&nbsp;&nbsp;&nbsp;&nbsp;uses = "docker://golang:latest"<br />
-&nbsp;&nbsp;&nbsp;&nbsp;args = "go test"<br />
-}<br />
-</code>
-</fieldset><br />
+<pre><code class="bash">action "test" {
+    uses = "docker://golang:latest"
+    args = "go test"
+}
+</code></pre>
+</fieldset>
 <p>Run act locally.<p>
-<code>
-$ act -a test<br />
-[test] docker run image=golang:latest entrypoint=[] cmd=["go" "test"]<br />
-PASS<br />
-ok  	_/github/workspace	0.001s<br />
-</code>
+<pre><code class="bash">$ act -a test
+[test] docker run image=golang:latest entrypoint=[] cmd=["go" "test"]
+PASS
+ok  	_/github/workspace	0.001s
+</code></pre>
 {% endblock %}

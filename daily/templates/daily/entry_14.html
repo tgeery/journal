@@ -8,34 +8,34 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry describes basic usage of SQL migrations for Django using the <a href="https://docs.djangoproject.com/en/2.2/intro/tutorial02/">Tutorial 2 example</a>.</p>
-<h3>{{ entry.header1 }}</h3>
-<code>{{ entry.context1 }}</code>
-<h3>{{ entry.header2 }}</h3>
-<code>{{ entry.context2 }}<br />
-Migrations for 'daily':<br />
-&nbsp;&nbsp;daily/migrations/0002_auto_20200103_0548.py<br />
-- Alter field date on journal<br />
-- Alter field title on journal</code><br />
-<code>$ python3 manage.py sqlmigrate daily 0002<br />
-	BEGIN;<br />
---<br />
--- Alter field date on journal<br />
---<br />
-CREATE TABLE "new__daily_journal" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date" datetime NOT NULL, "title" varchar(200) NOT NULL);<br />
-INSERT INTO "new__daily_journal" ("id", "title", "date") SELECT "id", "title", "date" FROM "daily_journal";<br />
-DROP TABLE "daily_journal";<br />
-ALTER TABLE "new__daily_journal" RENAME TO "daily_journal";<br />
---<br />
--- Alter field title on journal<br />
---<br />
-CREATE TABLE "new__daily_journal" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date" datetime NOT NULL, "title" varchar(200) NOT NULL);<br />
-INSERT INTO "new__daily_journal" ("id", "date", "title") SELECT "id", "date", "title" FROM "daily_journal";<br />
-DROP TABLE "daily_journal";<br />
-ALTER TABLE "new__daily_journal" RENAME TO "daily_journal";<br />
-COMMIT;<br />
-$ python3 manage.py migrate<br />
-Operations to perform:<br />
-Apply all migrations: admin, auth, contenttypes, daily, sessions<br />
-  Running migrations:<br />
-Applying daily.0002_auto_20200103_0548... OK</code>
+<h3>Pre-requisite</h3>
+<pre><code class="bash">$ python3 -m pip install psycopg2-binary</code></pre>
+<h3>Activate Models</h3>
+<pre><code class="bash">$ python3 manage.py makemigrations daily
+Migrations for 'daily':
+  daily/migrations/0002_auto_20200103_0548.py
+- Alter field date on journal
+- Alter field title on journal
+$ python3 manage.py sqlmigrate daily 0002
+	BEGIN;
+--
+-- Alter field date on journal
+--
+CREATE TABLE "new__daily_journal" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date" datetime NOT NULL, "title" varchar(200) NOT NULL);
+INSERT INTO "new__daily_journal" ("id", "title", "date") SELECT "id", "title", "date" FROM "daily_journal";
+DROP TABLE "daily_journal";
+ALTER TABLE "new__daily_journal" RENAME TO "daily_journal";
+--
+-- Alter field title on journal
+--
+CREATE TABLE "new__daily_journal" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date" datetime NOT NULL, "title" varchar(200) NOT NULL);
+INSERT INTO "new__daily_journal" ("id", "date", "title") SELECT "id", "date", "title" FROM "daily_journal";
+DROP TABLE "daily_journal";
+ALTER TABLE "new__daily_journal" RENAME TO "daily_journal";
+COMMIT;
+$ python3 manage.py migrate
+Operations to perform:
+Apply all migrations: admin, auth, contenttypes, daily, sessions
+  Running migrations:
+Applying daily.0002_auto_20200103_0548... OK</code></pre>
 {% endblock %}

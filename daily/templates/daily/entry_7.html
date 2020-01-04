@@ -11,56 +11,54 @@
 <h3>Setup a Sample Project (ExampleProject1)</h3>
 <p>Performs addition and subtraction</p>
 <fieldset><legend>Example1.h</legend>
-#pragma once<br />
-class Example1<br />
-{<br />
-public:<br />
-  Example1(void);<br />
-  ~Example1(void);<br />
-<br />
-  int Add(int a, int b);<br />
-  int Subtract(int a, int b);<br />
-};<br />
+#pragma once
+class Example1
+{
+public:
+  Example1(void);
+  ~Example1(void);
+
+  int Add(int a, int b);
+  int Subtract(int a, int b);
+};
 </fieldset>
-<fieldset><legend>Example1.cpp</legend>
-#include "StdAfx.h"<br />
-#include "Example1.h"<br />
-<br />
-Example1::Example1(void)<br />
-{}<br />
-<br />
-Example1::~Example1(void)<br />
-{}<br />
-<br />
-int Example1::Add(int a, int b) {<br />
-	return a+b;<br />
-}<br />
-<br />
-int Example1::Subtract(int a, int b) {<br />
-	return a-b;<br />
-}<br />
+<fieldset><legend>Example1.cpp</legend><pre><code class="cpp">#include "StdAfx.h"
+#include "Example1.h"
+
+Example1::Example1(void)
+{}
+
+Example1::~Example1(void)
+{}
+
+int Example1::Add(int a, int b) {
+	return a+b;
+}
+
+int Example1::Subtract(int a, int b) {
+	return a-b;
+}</code></pre>
 </fieldset>
 <h3>Setup a Native Test Project</h3>
 <p>Start Visual Studio, select 'Create a new project'.</p>
 <img src="/static/images/open_vs.png" alt="" />
 <p>Select 'Native Unit Test Project'.</p>
 <img src="/static/images/test_vs.png" alt="" />
-<fieldset><legend>UnitTest1.cpp</legend>
-[TestMethod]<br />
-void TestMethod1()<br />
-{<br />
-  Example1 ex1;<br />
-  Assert::AreEqual(3, ex1.Add(1,2));<br />
-  Assert::AreEqual(4, ex1.Add(2,2));<br />
-};<br />
-<br />
-[TestMethod]<br />
-void TestMethod2()<br />
-{<br />
-  Example1 ex1;<br />
-  Assert::AreEqual(2, ex1.Subtract(4,2));<br />
-  Assert::AreEqual(1, ex1.Subtract(3,2));<br />
-}<br />
+<fieldset><legend>UnitTest1.cpp</legend><pre><code class="cpp">[TestMethod]
+void TestMethod1()
+{
+  Example1 ex1;
+  Assert::AreEqual(3, ex1.Add(1,2));
+  Assert::AreEqual(4, ex1.Add(2,2));
+};
+
+[TestMethod]
+void TestMethod2()
+{
+  Example1 ex1;
+  Assert::AreEqual(2, ex1.Subtract(4,2));
+  Assert::AreEqual(1, ex1.Subtract(3,2));
+}</code></pre>
 </fieldset>
 <p>Right click project and select 'Run tests'.</p>
 <img src="/static/images/run_vs.png" alt="" />

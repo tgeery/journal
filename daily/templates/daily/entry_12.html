@@ -7,7 +7,7 @@
 {% load staticfiles %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
-<p>This entry was an attempt at (but incomplete) using Yahoo Finance API to implement Buffett's 4 rules for investing as I interpreted from <a href="https://www.buffettsbooks.com/">Buffett's Books</a>.</p><br />
+<p>This entry was an attempt at (but incomplete) using Yahoo Finance API to implement Buffett's 4 rules for investing as I interpreted from <a href="https://www.buffettsbooks.com/">Buffett's Books</a>.</p>
 <p>Below is the criteria to determine a good long-term stock choice and how its implemented.</p>
 <ul>
 	<ol type = "1">
@@ -33,58 +33,54 @@
 	</ol>
 </ul>
 <h3>Setup</h3>
-<code>
-python3 -m pip install yfinance lxml
-</code>
+<pre><code class="bash">python3 -m pip install yfinance lxml</code></pre>
 <fieldset><legend>check.py</legend>
-<code>
-from __future__ import division<br />
-import yfinance as yf<br />
-import sys<br />
-<br />
-if __name__ == '__main__':<br />
-&nbsp;&nbsp;if len(sys.argv) < 2:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;print('Need ticker symbol')<br />
-&nbsp;&nbsp;&nbsp;&nbsp;exit(1)<br />
-<br />
-&nbsp;&nbsp;tick = yf.Ticker(sys.argv[1])<br />
-&nbsp;&nbsp;price = tick.info['regularMarketPrice']<br />
-&nbsp;&nbsp;book = tick.info['bookValue']<br />
-&nbsp;&nbsp;vol = tick.info['volume']<br />
-&nbsp;&nbsp;cap = tick.info['marketCap']<br />
-&nbsp;&nbsp;curr = tick.balancesheet.iloc[18][0]/tick.balancesheet.iloc[13][0]<br />
-&nbsp;&nbsp;debt = tick.balancesheet.iloc[15][0] + tick.balancesheet.iloc[23][0]<br />
-&nbsp;&nbsp;equity = tick.balancesheet.iloc[2][0]<br />
-&nbsp;&nbsp;dpe = (debt/equity)<br />
-&nbsp;&nbsp;cfi = tick.cashflow.iloc[2]<br />
-&nbsp;&nbsp;cff = tick.cashflow.iloc[4]<br />
-&nbsp;&nbsp;cfo = tick.cashflow.iloc[11]<br />
-&nbsp;&nbsp;<br />
-&nbsp;&nbsp;print('Name: {}'.format(tick.info['longName']))<br />
-&nbsp;&nbsp;print('Price: {}'.format(price))<br />
-&nbsp;&nbsp;print('Current ratio: {}...{}'.format(curr, "OK" if dpe < 1.5 else "Bad"))<br />
-&nbsp;&nbsp;print('Debt/equity: {}...{}'.format(dpe, "OK" if dpe <= 0.5 else "Bad"))<br />
-&nbsp;&nbsp;print('Book Value: {}'.format(book))<br />
-&nbsp;&nbsp;print('Volume: {}...{}'.format(vol, "OK" if vol > 1000000 else "Bad"))<br />
-&nbsp;&nbsp;print('Market Cap: {}...{}'.format(cap, "OK" if cap > 50000000000 else "Bad"))<br />
-&nbsp;&nbsp;print('Cashflow from Investments: {} {} {} {}...{}'.format(cfi[0], cfi[1], cfi[2], cfi[3],<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"OK" if cfi[0] < 0 and cfi[1] < 0 and cfi[2] < 0 and cfi[3] < 0 else "Bad"))<br />
-&nbsp;&nbsp;print('Cashflow from Financials: {} {} {} {}'.format(cff[0], cff[1], cff[2], cff[3]))<br />
-&nbsp;&nbsp;print('Cashflow from Operationss: {} {} {} {}...{}'.format(cfo[0], cfo[1], cfo[2], cfo[3],<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"OK" if cfo[0] > 0 and cfo[1] > 0 and cfo[2] > 0 and cfo[3] > 0 else "Bad"))<br />
-</code>
-</fieldset><br />
+<pre><code class="python">from __future__ import division
+import yfinance as yf
+import sys
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+    print('Need ticker symbol')
+    exit(1)
+
+    tick = yf.Ticker(sys.argv[1])<br />
+    price = tick.info['regularMarketPrice']
+    book = tick.info['bookValue']
+    vol = tick.info['volume']
+    cap = tick.info['marketCap']
+    curr = tick.balancesheet.iloc[18][0]/tick.balancesheet.iloc[13][0]
+    debt = tick.balancesheet.iloc[15][0] + tick.balancesheet.iloc[23][0]
+    equity = tick.balancesheet.iloc[2][0]
+    dpe = (debt/equity)
+    cfi = tick.cashflow.iloc[2]
+    cff = tick.cashflow.iloc[4]
+    cfo = tick.cashflow.iloc[11]
+    
+    print('Name: {}'.format(tick.info['longName']))
+    print('Price: {}'.format(price))
+    print('Current ratio: {}...{}'.format(curr, "OK" if dpe < 1.5 else "Bad"))
+    print('Debt/equity: {}...{}'.format(dpe, "OK" if dpe <= 0.5 else "Bad"))
+    print('Book Value: {}'.format(book))
+    print('Volume: {}...{}'.format(vol, "OK" if vol > 1000000 else "Bad"))
+    print('Market Cap: {}...{}'.format(cap, "OK" if cap > 50000000000 else "Bad"))
+    print('Cashflow from Investments: {} {} {} {}...{}'.format(cfi[0], cfi[1], cfi[2], cfi[3],
+    &nbsp;&nbsp;&nbsp;&nbsp;"OK" if cfi[0] < 0 and cfi[1] < 0 and cfi[2] < 0 and cfi[3] < 0 else "Bad"))
+    print('Cashflow from Financials: {} {} {} {}'.format(cff[0], cff[1], cff[2], cff[3]))
+    print('Cashflow from Operationss: {} {} {} {}...{}'.format(cfo[0], cfo[1], cfo[2], cfo[3],
+        "OK" if cfo[0] > 0 and cfo[1] > 0 and cfo[2] > 0 and cfo[3] > 0 else "Bad"))
+</code></pre>
+</fieldset>
 <h3>Example using Microsft</h3>
-<code>
-$ python3 check.py msft<br />
-Name: Microsoft Corporation<br />
-Price: 157.48<br />
-Debt/equity: 0.705345450991889...Bad<br />
-Book Value: 13.893<br />
-Volume: 5904909...OK<br />
-Market Cap: 1200622141440...OK<br />
-Cashflow from Investments: -15773000000.0 -6061000000.0 -46781000000.0 -23950000000.0...OK<br />
-Cashflow from Financials: -36887000000.0 -33590000000.0 8408000000.0 -8393000000.0<br />
-Cashflow from Operationss: 52185000000.0 43884000000.0 39507000000.0 33325000000.0...OK<br />
-</code>
+<pre><code class="bash">$ python3 check.py msft
+Name: Microsoft Corporation
+Price: 157.48
+Debt/equity: 0.705345450991889...Bad
+Book Value: 13.893
+Volume: 5904909...OK
+Market Cap: 1200622141440...OK
+Cashflow from Investments: -15773000000.0 -6061000000.0 -46781000000.0 -23950000000.0...OK
+Cashflow from Financials: -36887000000.0 -33590000000.0 8408000000.0 -8393000000.0
+Cashflow from Operationss: 52185000000.0 43884000000.0 39507000000.0 33325000000.0...OK
+</code></pre>
 {% endblock %}
