@@ -1,0 +1,125 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes some basic SQL usage with PostgresSQL(<a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04">Digital Ocean tutorial</a> & <a href="https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-drop-database/">postgresqltutorial.com</a>) and MongoDB(<a href="https://beginnersbook.com/2017/09/mongodb-tutorial/">beginners book</a>).</p><br />
+<h3>Postgres Usage</h3>
+<h4>Install</h4>
+<code>$ sudo apt-get install postgresql</code>
+<h4>Start Daemon</h4>
+<code>$ /etc/init.d/postgresql start<br />
+$ /etc/init.d/postgresql status<br />
+10/main (port 5432): online</code>
+<h4>Run psql with default user</h4>
+<p>get help</p>
+<code>$ sudo -u postgres psql -c "\?"</code>
+<p>list  databases</p>
+<code>$ sudo -u postgres psql -c "\l"<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List of databases<br />
+&nbsp;&nbsp;&nbsp;Name    |  Owner   | Encoding | Collate |  Ctype  |   Access privileges<br />
+-----------+----------+----------+---------+---------+-----------------------<br />
+postgres&nbsp; | postgres | UTF8     | C.UTF-8 | C.UTF-8 |<br />
+template0 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | postgres=CTc/postgres<br />
+template1 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +<br />
+           |          |          |         |         | postgres=CTc/postgres<br />
+</code>
+<h4>Create database</h4>
+<code>$ sudo -u postgres psql -c "CREATE DATABASE test;"<br />
+WARNING:  could not flush dirty data: Function not implemented<br />
+CREATE DATABASE<br />
+$ sudo -u postgres psql -c "\l"<br />
+List of databases<br />
+   Name    |  Owner   | Encoding | Collate |  Ctype  |   Access privileges
+-----------+----------+----------+---------+---------+-----------------------
+postgres  | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+template0 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
+           |          |          |         |         | postgres=CTc/postgres
+template1 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
+           |          |          |         |         | postgres=CTc/postgres
+test      | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+(4 rows)<br />
+</code>
+<h4>Delete database</h4>
+<code>$ sudo -u postgres psql -c "DROP DATABASE test;"<br />
+DROP DATABASE<br />
+$ sudo -u postgres psql -c "\l"<br />
+                              List of databases
+   Name    |  Owner   | Encoding | Collate |  Ctype  |   Access privileges
+-----------+----------+----------+---------+---------+-----------------------
+postgres  | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+template0 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
+           |          |          |         |         | postgres=CTc/postgres
+template1 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
+           |          |          |         |         | postgres=CTc/postgres
+(3 rows)</code>
+<h4>Create table</h4>
+<code>$ sudo -u postgres psql -c "CREATE TABLE test(<br />
+id serial PRIMARY KEY,<br />
+type varchar (50) NOT NULL<br />
+);<br />
+"<br />
+$ sudo -u postgres psql -c "\dt"<br />
+         List of relations
+Schema | Name  | Type  |  Owner
+--------+-------+-------+----------
+public | test | table | postgres
+(1 row)<br />
+$ sudo -u postgres psql -c "SELECT * FROM test"<br />
+id | type
+----+------
+(0 rows)<br />
+Add data to table
+$ sudo -u postgres psql -c "INSERT INTO test (type) VALUES ('my test');"
+INSERT 0 1
+$ sudo -u postgres psql -c "SELECT * FROM test"
+id |  type
+----+---------
+  1 | my test
+(1 row)
+Delete data from table<br />
+$ sudo -u postgres psql -c "DELETE FROM test WHERE id=1;"<br />
+DELETE 1<br />
+$ sudo -u postgres psql -c "SELECT * FROM test"<br />
+id | type<br />
+----+------<br />
+(0 rows)<br />
+</code>
+<h4>Stop Daemon</h4>
+<code>$ sudo /etc/init.d/postgresql stop<br />
+* Stopping PostgreSQL 10 database server                                                    [ OK ]</code>
+<h3>MongoDB Usage</h3>
+<h4>Install</h4>
+<code>$ sudo apt-get install mongodb</code>
+<h3>Start Daemon</h3>
+<code>$ sudo /etc/init.d/mongodb start<br />
+* Starting database mongodb                                                                 [ OK ]<br />
+$ /etc/init.d/mongodb status<br />
+* Checking status of database mongodb                                                       [ OK ]</code>
+<h4>Run mongo as default user</h4>
+<code>$ mongo</code>
+<h4>Create database</h4>
+<code>> use test</code>
+<h4>Create collection</h4>
+<code>> db.user.insert ({val: "my test"})
+> show dbs<br />
+admin   0.000GB<br />
+config  0.000GB<br />
+local   0.000GB<br />
+test    0.000GB<br />
+> db.user.find()<br />
+{ "_id" : ObjectId("5e0e556541512c498ebbe4c2"), "val" : "my test" }</code>
+<h4>Drop collection</h4>
+<code>> db.user.drop()<br />
+true<br />
+> db.user.find()<br />
+></code>
+<h4>Stop Daemon</h4>
+<code>$ sudo /etc/init.d/mongodb stop<br />
+* Stopping database mongodb                                                                 [ OK ]</code>
+{% endblock %}
