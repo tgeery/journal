@@ -1,0 +1,24 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes installing Houdini (visual effects software) on Ubuntu.</p>
+<h3>Procedure</h3>
+<p>Download the installation package from <a href="https://www.sidefx.com/download/">Side FX</a> downloads page.</p>
+<p>Extract and begin installation script</p>
+<pre><code class="bash">$ tar -xzvf houdini-18.0.287-linux_x86_64_gcc6.3.tar.gz
+$ cd houdini-18.0.287-linux_x86_64_gcc6.3/
+$ sudo ./houdini.install</code></pre>
+<img src="{% static 'images/houdini_start_install.png' %}" alt="">
+<p>Complete license agreement.</p>
+<img src="{% static 'images/houdini_license_agreement.png' %}" alt="">
+<p>Select kit to install and enter the default 'F'.</p>
+<img src="{% static 'images/houdini_kit_select.png' %}" alt="">
+<p>Wait for installation completion.</p>
+<img src="{% static 'images/houdini_install_complete.png' %}" alt="">
+{% endblock %}
