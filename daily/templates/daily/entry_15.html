@@ -1,0 +1,46 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes basic usage of <a href="https://highlightjs.org/">Highlight.js</a> to dislplay code snippets within HTML &lt;pre&gt;&lt;code&gt; tags using syntax highlighting.</p>
+<h3>Pre-requisite</h3>
+<p>This example will be used within a Django project that is including bootstrap CSS.</p>
+<h3>Simple non-highlight.js example</h3>
+<p>Example referenced from <a href="https://themes.gohugo.io/hugo-book/">https://themes.gohugo.io/hugo-book/</a>.</p>
+<pre><code class="html">&lt;html>
+  &lt;head>
+    &lt;style>
+      #terminal { 
+        color:#f8f8f2;
+        background-color:#272822;
+        -moz-tab-size:4;
+        -o-tab-size:4;
+        tab-size:4;
+      }
+    &lt;/style>
+  &lt;/head>
+  &lt;body>
+    &lt;pre id="terminal">$ python3 -m pip install psycopg2-binary&lt;/pre>
+  &lt;/body>
+&lt;/html></code></pre>
+<img src="{% static 'images/basic_terminal.png' %}" alt="">
+<h3>Highlight.js Example</h3>
+<pre><code class="html">&lt;html>
+  &lt;head>
+    &lt;link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
+    &lt;script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js">&lt;/script>
+    &lt;script>hljs.initHighlightingOnLoad();&lt;/script>
+  &lt;/head>
+  &lt;body>
+    &lt;pre>&lt;code class="bash">#!/bin/bash
+      echo "hello world"
+    &lt;/code>&lt;/pre>
+  &lt;/body>
+&lt;/html></code></pre>
+<img src="{% static 'images/highlight_terminal.png' %}" alt="">
+{% endblock %}
