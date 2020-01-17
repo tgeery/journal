@@ -1,0 +1,42 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes some basic usage of SVN on Ubuntu subsystems.</p>
+<h3>Create Repository</h3>
+<pre><code class="bash">svn create myRemoteRepo
+svn checkout file:///mnt/c/Users/user/Desktop/myRemoteRepo
+</code></pre>
+<h3>Add and Commit to Repository</h3>
+<pre><code class="bash">touch README.md
+svn status
+?       README.md
+svn add README.md
+A         README.md
+</code></pre>
+<h3>Clone Repository</h3>
+<pre><code class="bash">svn checkout file:///mnt/c/Users/user/Desktop/myRemoteRepo myLocalRepo2</code></pre>
+<h3>Another commit from another checkout</h3>
+<pre><code class="bash">echo "This is rev 1" > rev1.txt
+svn add rev1.txt
+svn commit
+</code></pre>
+<h3>Update Repository</h3>
+<pre><code class="bash">cd ../myLocalRepo
+svn update
+sed -i 's/1/2/g' rev1.txt
+svn commit
+</code></pre>
+<h3>Reverse merge a particular file from previous commit</h3>
+<pre><code class="bash">svn merge -r head:r2 rev1.txt
+cat rev1.txt
+This is rev 1
+echo "Some test" > test1.txt
+svn commit -m "Only the test" test1.txt
+</code></pre>
+{% endblock %}
