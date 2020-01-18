@@ -1,0 +1,54 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes the basic setup for an Nvidia Jetson Nano. The Nano is only connected using micro USB and uses a micro SD; however a keyboard, mouse, and HDMI were used to configure initial board bring up.</p>
+<img src="{% static '/images/nano_setup.jpg' %}" alt="">
+<pre><code class="bash">https://developer.nvidia.com/jetson-nano-sd-card-image-r3231</code></pre>
+<pre><code class="bash">https://www.balena.io/etcher/</code></pre>
+<pre><code class="bash">cd ~/Downloads/
+unzip balena-etcher-electron-1.5.71-linux-x64.zip
+./balenaEtcher-1.5.71-x64.AppImage</code></pre>
+<p>select storage device</p>
+<img src="{% static '/images/etcher_setup.png' %}" alt="">
+<p>select flash</p>
+<img src="{% static '/images/etcher_flashing.png' %}" alt="">
+<p>May require a reboot and then verify ubuntu bootup and perform initial configuration.</p>
+<img src="{% static '/images/nano_desktop_screenshot.png' %}" alt="">
+<p>Test the setup by pinging and ssh'ing in.</p>
+<pre><code class="bash">ping 192.168.55.1
+PING 192.168.55.1 (192.168.55.1) 56(84) bytes of data.
+64 bytes from 192.168.55.1: icmp_seq=1 ttl=64 time=0.836 ms
+64 bytes from 192.168.55.1: icmp_seq=2 ttl=64 time=0.809 ms
+64 bytes from 192.168.55.1: icmp_seq=3 ttl=64 time=0.907 ms
+64 bytes from 192.168.55.1: icmp_seq=4 ttl=64 time=0.899 ms
+64 bytes from 192.168.55.1: icmp_seq=5 ttl=64 time=1.00 ms
+</code></pre>
+<pre><code class="bash">ssh (user)@192.168.55.1
+(user)@192.168.55.1's password: 
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.9.140-tegra aarch64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, you can run the 'unminimize' command.
+
+215 packages can be updated.
+114 updates are security updates.
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+Last login: Sun Jan 28 11:05:23 2018 from 192.168.55.100
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+</code></pre>
+{% endblock %}
