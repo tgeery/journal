@@ -1,0 +1,65 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry shows a way to create an animated gif from a sequence of EXR files, inspired by <a href='https://medium.com/swlh/python-animated-images-6a85b9b68f86'>Create Animated Images Using Python</a> and using code from <a href='https://excamera.com/articles/26/doc/intro.html'>OpenEXR Introduction and Cookbook</a>. This is not a very useful application when the same can be achieved with ffmpeg or imagemagick.</p>
+<p>Using a sequence of frames such as the image below, one could create a GIF.</p>
+<img src="{% static '/images/soccerball.mantra1.0001.png' %}" alt="">
+<p>Before starting I had a small issue with pip installing OpenEXR</p>
+<pre><code class="bash">python3 -m pip install OpenEXR</code></pre>
+<pre><code class="bash">Command "/usr/bin/python3 -u -c "import setuptools, tokenize;__file__='/tmp/pip-install-1ijtiy86/
+OpenEXR/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', 
+'\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /tmp/pip-record-8rfm5jjy/
+install-record.txt --single-version-externally-managed --compile --user --prefix=" failed with 
+error code 1 in /tmp/pip-install-1ijtiy86/OpenEXR/</code></pre>
+<p>To resolve this, I first</p>
+<pre><code class="bash">sudo apt-get install libopenexr-dev</code></pre>
+<pre><code class="python">import imageio
+import pygifsicle
+from pathlib import Path
+import OpenEXR, Imath
+from PIL import Image
+import sys
+import os
+
+def exrtojpg(exrfile):
+    f = OpenEXR.InputFile(str(exrfile))
+    pt = Imath.PixelType(Imath.PixelType.FLOAT)
+    dw = f.header()['dataWindow']
+    size = (dw.max.x - dw.min.x + 1, dw.max.y - dw.min.y + 1)
+
+    rgbf = [Image.frombytes("F", size, f.channel(c, pt)) for c in "RGB"]
+
+    extrema = [im.getextrema() for im in rgbf]
+    darkest = min([lo for (lo,hi) in extrema])
+    lighest = max([hi for (lo,hi) in extrema])
+    scale = 255 / (lighest - darkest)
+    def normalize_0_255(v):
+        return (v * scale) + darkest
+    rgb8 = [im.point(normalize_0_255).convert("L") for im in rgbf]
+    Image.merge("RGB", rgb8).save('temp.jpg')
+
+
+img_path = Path('.')
+if len(sys.argv) > 1:
+    img_path = Path(sys.argv[1])
+
+img = list(img_path.glob('*.exr'))
+img.sort()
+
+img_list = []
+for i in img:
+    print('Adding {}'.format(i))
+    exrtojpg(i)
+    img_list.append(imageio.imread('temp.jpg'))
+os.remove('temp.jpg')
+
+if len(img_list) > 0:
+    imageio.mimwrite('animated.gif', img_list)</code></pre>
+<img src="{% static '/images/animated.gif' %}" alt="">
+{% endblock %}
