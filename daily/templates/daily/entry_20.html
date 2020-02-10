@@ -1,0 +1,165 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describe basic setup and how to run a simple audio playback app using gstreamer as described in the <a href='https://gstreamer.freedesktop.org/documentation/application-development/basics/helloworld.html?gi-language=c'>GStreamer documentation</a>.</p>
+<pre><code class='bash'>apt-get install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio</code></pre>
+<h3>Copy example code</h3>
+<pre><code class='c'>#include &lt;gst/gst.h&gt;
+#include &lt;glib.h&gt;
+
+
+static gboolean
+bus_call (GstBus     *bus,
+          GstMessage *msg,
+          gpointer    data)
+{
+  GMainLoop *loop = (GMainLoop *) data;
+
+  switch (GST_MESSAGE_TYPE (msg)) {
+
+    case GST_MESSAGE_EOS:
+      g_print ("End of stream\n");
+      g_main_loop_quit (loop);
+      break;
+
+    case GST_MESSAGE_ERROR: {
+      gchar  *debug;
+      GError *error;
+
+      gst_message_parse_error (msg, &error, &debug);
+      g_free (debug);
+
+      g_printerr ("Error: %s\n", error->message);
+      g_error_free (error);
+
+      g_main_loop_quit (loop);
+      break;
+    }
+    default:
+      break;
+  }
+
+  return TRUE;
+}
+
+
+static void
+on_pad_added (GstElement *element,
+              GstPad     *pad,
+              gpointer    data)
+{
+  GstPad *sinkpad;
+  GstElement *decoder = (GstElement *) data;
+
+  /* We can now link this pad with the vorbis-decoder sink pad */
+  g_print ("Dynamic pad created, linking demuxer/decoder\n");
+
+  sinkpad = gst_element_get_static_pad (decoder, "sink");
+
+  gst_pad_link (pad, sinkpad);
+
+  gst_object_unref (sinkpad);
+}
+
+
+
+int
+main (int   argc,
+      char *argv[])
+{
+  GMainLoop *loop;
+
+  GstElement *pipeline, *source, *demuxer, *decoder, *conv, *sink;
+  GstBus *bus;
+  guint bus_watch_id;
+
+  /* Initialisation */
+  gst_init (&argc, &argv);
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+
+  /* Check input arguments */
+  if (argc != 2) {
+    g_printerr ("Usage: %s <Ogg/Vorbis filename>\n", argv[0]);
+    return -1;
+  }
+
+
+  /* Create gstreamer elements */
+  pipeline = gst_pipeline_new ("audio-player");
+  source   = gst_element_factory_make ("filesrc",       "file-source");
+  demuxer  = gst_element_factory_make ("oggdemux",      "ogg-demuxer");
+  decoder  = gst_element_factory_make ("vorbisdec",     "vorbis-decoder");
+  conv     = gst_element_factory_make ("audioconvert",  "converter");
+  sink     = gst_element_factory_make ("autoaudiosink", "audio-output");
+
+  if (!pipeline || !source || !demuxer || !decoder || !conv || !sink) {
+    g_printerr ("One element could not be created. Exiting.\n");
+    return -1;
+  }
+
+  /* Set up the pipeline */
+
+  /* we set the input filename to the source element */
+  g_object_set (G_OBJECT (source), "location", argv[1], NULL);
+
+  /* we add a message handler */
+  bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));
+  bus_watch_id = gst_bus_add_watch (bus, bus_call, loop);
+  gst_object_unref (bus);
+
+  /* we add all elements into the pipeline */
+  /* file-source | ogg-demuxer | vorbis-decoder | converter | alsa-output */
+  gst_bin_add_many (GST_BIN (pipeline),
+                    source, demuxer, decoder, conv, sink, NULL);
+
+  /* we link the elements together */
+  /* file-source -> ogg-demuxer ~> vorbis-decoder -> converter -> alsa-output */
+  gst_element_link (source, demuxer);
+  gst_element_link_many (decoder, conv, sink, NULL);
+  g_signal_connect (demuxer, "pad-added", G_CALLBACK (on_pad_added), decoder);
+
+  /* note that the demuxer will be linked to the decoder dynamically.
+     The reason is that Ogg may contain various streams (for example
+     audio and video). The source pad(s) will be created at run time,
+     by the demuxer when it detects the amount and nature of streams.
+     Therefore we connect a callback function which will be executed
+     when the "pad-added" is emitted.*/
+
+
+  /* Set the pipeline to "playing" state*/
+  g_print ("Now playing: %s\n", argv[1]);
+  gst_element_set_state (pipeline, GST_STATE_PLAYING);
+
+
+  /* Iterate */
+  g_print ("Running...\n");
+  g_main_loop_run (loop);
+
+
+  /* Out of the main loop, clean up nicely */
+  g_print ("Returned, stopping playback\n");
+  gst_element_set_state (pipeline, GST_STATE_NULL);
+
+  g_print ("Deleting pipeline\n");
+  gst_object_unref (GST_OBJECT (pipeline));
+  g_source_remove (bus_watch_id);
+  g_main_loop_unref (loop);
+
+  return 0;
+}
+</code></pre>
+<h3>Compile code</h3>
+<pre><code class='bash'>gcc -o helloworld helloworld.c `pkg-config --cflags --libs glib-2.0` `pkg-config --cflags --libs gstreamer-1.0`</code></pre>
+<h3>Get a sample OGG audio file</h3>
+<pre><code class='bash'>wget https://file-examples.com/wp-content/uploads/2017/11/file_example_OOG_1MG.ogg</code></pre>
+<h3>Verify app plays audio</h3>
+<pre><code class=bash'>./helloworld file_example_OOG_1MG.ogg</code></pre>
+{% endblock %}
