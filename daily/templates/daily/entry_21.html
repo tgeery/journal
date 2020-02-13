@@ -1,0 +1,24 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes building <a href='https://gstreamer.freedesktop.org/modules/qt-gstreamer.html'>QtGStreamer module</a> from source and running the player example with a sample mp4 file.</p>
+<h3>Install Prerequisites</h3>
+<pre><code class='bash'>sudo apt-get install libboost-all-dev qt4-qmake libqt4-dev doxygen</code></pre>
+<h3>Clone and Build Repo</h3>
+<pre><code class='bash'>git clone --recursive https://anongit.freedesktop.org/git/gstreamer/qt-gstreamer.git
+cd qt-gstreamer/
+make</code></pre>
+<h3>Download sample file</h3>
+<p>Player application can play audio or video. Use a <a href='https://www.appsloveworld.com/download-sample-mp4-video-mp4-test-videos/'>sample video</a> file.</p>
+<h3>Run Player Example</h3>
+<pre><code class='bash'>examples/player/player</code></pre>
+<img src="{% static '/images/qtgstreamer_player_window.png' %}" alt="">
+<p>Select video file. Press play.</p>
+<img src="{% static '/images/qtgstreamer_player_video.png' %}" alt="">
+{% endblock %}
