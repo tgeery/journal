@@ -1,0 +1,35 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes compiling and running an Android project using command line.</p>
+<h3>Verify and Run Emulator</h3>
+<p>Make sure an emulator has been created using Android Studio or Qt and find it in its directory.</p>
+<pre><code class='bash'>ls ~/.android/avd/
+Pixel2.avd  Pixel2.ini
+~/Android/Sdk/emulator/emulator -avd Pixel2</code></pre>
+<img src="{% static '/images/android_emulator_start.png' %}" alt="">
+<h3>Create an Android Project using Qt</h3>
+<p>Select File-&gt;New File or Project</p>
+<img src="{% static '/images/android_new_project.png' %}" alt="">
+<p>Set the project name 'hello' as 'qmake' project. Then set kit to Android kit.</p>
+<img src="{% static '/images/android_kit_select.png' %}" alt="">
+<p>Verify the project was created.</p>
+<img src="{% static '/images/android_project_qml.png' %}" alt="">
+<h3>Compile and Install Project</h3>
+<pre><code class='bash'>ANDROID_NDK_ROOT=/home/&lt;username&gt;/Android/Sdk/ndk/21.0.6113669 /home/&lt;username&gt;/Qt/5.14.1/android/bin/qmake hello.pro
+make
+make apk
+/home/&lt;username&gt;/Android/Sdk/platform-tools/adb install android-build/build/outputs/apk/debug/android-build-debug.apk
+</code></pre>
+<p>For my installation I need to change 'android-hello-deployment-settings.json'.</p>
+<pre><code class='bash'>"sdk": "/home/&lt;username&gt;/Android/Sdk",</code></pre>
+<p>Verify the app has been installed and runs.</p>
+<img src="{% static '/images/android_app_hello.png' %}" alt="">
+<img src="{% static '/images/android_app_hello_run.png' %}" alt="">
+{% endblock %}

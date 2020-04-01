@@ -1,0 +1,52 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes compiling and running a <a href="https://doc.qt.io/qt-5/qtquick-porting-qt5.html">Qt5</a> QML-based project using <a href="https://github.com/GStreamer/qt-gstreamer/">GStreamer</a>.</p>
+<h3>Clone QtGStreamer Repository</h3>
+<pre><code class='bash'>git clone https://github.com/GStreamer/qt-gstreamer.git</code></pre>
+<h3>Compile Example Player using Qt4</h3>
+<pre><code class='bash'>sudo apt-get install libqt4-dev
+mkdir build
+cd build
+cmake ..
+make
+cd examples/qmlplayer
+mkdir build
+cd build
+cmake ..
+./qmlplayer</code></pre>
+<img src="{% static '/images/qmlplayer_video.png' %}" alt="">
+<p>At this point I learned that this example does not compile to Qt5 as it does not contain the 'declarative' module and returns the following error. Therefore, I decided to use the Qt 'MediaPlayer' and 'VideoOutput' classes which link to gstreamer libraries.</p>
+<pre><code class='bash'>main.cpp
+	main.cpp:21:10: fatal error: QtDeclarative/QDeclarativeView: No such file or directory
+	#include &lt;QtDeclarative/QDeclarativeView&gt;</code></pre>
+<p>Also, in order to compile for Qt5, use the command:</p>
+<pre><code class='bash'>cmake .. -DQT_VERSION=5</code></pre>
+<h3>Modify QML for Qt5</h3>
+<pre><code class='json'>Rectangle {
+    id: window
+    width: 400
+    height: 300
+	color: "green"
+
+	MediaPlayer {
+		id: player
+		autoPlay: true
+		autoLoad: true
+		source: "/home/travis/Videos/Dead_trees.mp4"
+	}
+
+	VideoOutput {
+		id: video
+		source: player
+		anchors.fill: parent
+	}
+}</code></pre>
+<img src="{% static '/images/qmlplayer_video2.png' %}" alt="">
+{% endblock %}
