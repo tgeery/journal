@@ -1,0 +1,29 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes compiling and running <a href="https://gitlab.freedesktop.org/gstreamer/gstreamer-rs/-/tree/master">rust gstreamer</a> examples.</p>
+<h3>Install Pre-Requisites</h3>
+<pre><code class='bash'>apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+      gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+      gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
+	  gstreamer1.0-libav libgstrtspserver-1.0-dev libges-1.0-dev</code></pre>
+<h3>Clone Repository</h3>
+<pre><code class='bash'>git clone --recursive https://gitlab.freedesktop.org/gstreamer/gstreamer-rs.git</code></pre>
+<h3>Compile Package</h3>
+<p>For my setup, I noticed I was missing a rust component and got the following error.</p>
+<pre><code class='bash'>python3 generator.py
+error: no such subcommand: `fmt`</code></pre>
+<p>Install rustfmt</p>
+<pre><code class='bash'>cargo install rustfmt
+python3 generator.py
+cargo build</code></pre>
+<h3>Run Example</h3>
+<pre><code class='bash'>cargo run --bin basic-tutorial-1</code></pre>
+<img src="{% static '/images/gstrust_player_run.png' %}" alt="">
+{% endblock %}
