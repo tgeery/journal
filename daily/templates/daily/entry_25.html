@@ -1,0 +1,53 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes ways to prepare client and server streaming applications using VLC and gst-launch.</p>
+<h3>UDP Stream</h3>
+<p>Prepare UDP sender</p>
+<ul><li>Select Media-&gt;Stream.</li>
+	<li>Select Stream</li>
+	<li>Select file, then Next</li>
+	<li>Choose UDP, then select Add, and set address to 'localhost', port to '8080', then Next</li>
+	<li>Verify the h.264 profile, select Next</li>
+	<li>Select Stream</li></ul>
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_udp_sender_select_file.png' %}" alt="">
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_udp_sender_set_source.png' %}" alt="">
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_udp_sender_set_address.png' %}" alt="">
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_udp_sender_type.png' %}" alt="">
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_udp_sender_setup.png' %}" alt="">
+<p>Prepare UDP receiver</p>
+<ul><li>Select Media-&gt;Open Network Stream</li>
+	<li>Set the address to 'udp://@:8080/ and select Play</li></ul>
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_udp_receiver_address.png' %}" alt="">
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_udp_receiver_play.png' %}" alt="">
+<h3>RTP Stream</h3>
+<p>Prepare RTP sender</p>
+<ul><li>Select Media-&gt;Stream</li>
+	<li>Select Stream</li>
+	<li>Select 'RTP / MPEG Transport Stream', then select Add, and set address to 'localhost', port to '8080', stream name leave blank, then Next</li>
+	<li>Verify the h.264 profile, select Next</li>
+	<li>Select Stream</li></ul>
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_rtp_sender_set_address.png' %}" alt="">
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_rtp_sender_setup.png' %}" alt="">
+<p>Prepare RTP receiver</p>
+<ul><li>Select Media-&gt;Open Network Stream</li>
+	<li>Set the address to 'rtp://@:8080/ and select Play</li></ul>
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_rtp_receiver_address.png' %}" alt="">
+<img style="max-width: 300px;max-height: 300px" src="{% static '/images/vlc_rtp_receiver_play.png' %}" alt="">
+<h3>gst-launch Stream</h3>
+<p>Using the following references:</p>
+<ul><li><a href="http://www.einarsundgren.se/gstreamer-basic-real-time-streaming-tutorial/">Gstreamer basic real time streaming tutorial</a></li>
+	<li><a href="https://gist.github.com/strezh/9114204">GStreamer cheat sheet</a></li></ul>
+<p>Prepare gst-launch sender</p>
+<pre><code class='bash'>gst-launch-1.0 uridecodebin uri="file:///home/&lt;username&gt;/Videos/Dead_trees.mp4" ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! "application/x-rtp,payload=103,clock-rate=90000" ! udpsink host=127.0.0.1 port=5000</code></pre>
+<p>Prepare gst-launch receiver</p>
+<pre><code class='bash'>gst-launch-1.0 udpsrc port=5000 ! "application/x-rtp" ! rtph264depay ! decodebin ! autovideosink</code></pre>
+<p>Also, to play file from location:</p>
+<pre><code class='bash'>gst-launch-1.0 -v filesrc  location=/home/&lt;username&gt;/Videos/Dead_trees.mp4 ! decodebin name=dec ! queue ! videoconvert ! autovideosink</code></pre>
+{% endblock %}
