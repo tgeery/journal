@@ -43,7 +43,8 @@
 <h3>gst-launch Stream</h3>
 <p>Using the following references:</p>
 <ul><li><a href="http://www.einarsundgren.se/gstreamer-basic-real-time-streaming-tutorial/">Gstreamer basic real time streaming tutorial</a></li>
-	<li><a href="https://gist.github.com/strezh/9114204">GStreamer cheat sheet</a></li></ul>
+	<li><a href="https://gist.github.com/strezh/9114204">GStreamer cheat sheet</a></li>
+	<li><a href="https://doc-kurento.readthedocs.io/en/6.12.0/knowledge/rtp_streaming.html#simplest-rtp-sender">RTP Streaming Commands</a></li></ul>
 <p>Prepare gst-launch sender</p>
 <pre><code class='bash'>gst-launch-1.0 uridecodebin uri="file:///home/&lt;username&gt;/Videos/Dead_trees.mp4" ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! "application/x-rtp,payload=103,clock-rate=90000" ! udpsink host=127.0.0.1 port=5000</code></pre>
 <p>Prepare gst-launch receiver</p>
