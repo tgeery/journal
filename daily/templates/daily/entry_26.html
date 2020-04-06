@@ -1,0 +1,114 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry shows a simple <a href="https://doc.rust-lang.org/book/ch16-01-threads.html">threading</a> and <a href="https://doc.rust-lang.org/std/net/struct.TcpStream.html">tcp</a> client/server app in rust.</p>
+<h3>Threading</h3>
+<p>Code:</p>
+<pre><code class='rust'>use std::thread;
+
+fn thread_func(id: u8) {
+    for i in 0..10 {
+        println!("id {}: {}", id, i);
+    }
+}
+
+fn main() {
+    let child1 = thread::spawn(|| thread_func(1));
+    let child2 = thread::spawn(|| thread_func(2));
+    child1.join();
+    child2.join();
+}
+</code></pre>
+<p>Output:</p>
+<pre><code class='bash'>id 1: 0
+id 1: 1
+id 1: 2
+id 1: 3
+id 1: 4
+id 1: 5
+id 2: 0
+id 2: 1
+id 2: 2
+id 2: 3
+id 2: 4
+id 2: 5
+id 2: 6
+id 2: 7
+id 2: 8
+id 1: 6
+id 1: 7
+id 2: 9
+id 1: 8
+id 1: 9
+</pre></code>
+<h3>TCP Client/Server</h3>
+<p>Code:</p>
+<pre><code class='rust'>
+use std::io::prelude::*;
+use std::net::{TcpStream, TcpListener};
+use std::thread;
+use std::str::from_utf8;
+use std::thread::sleep;
+use std::time;
+
+fn run_client() {
+    let mut stream = TcpStream::connect("127.0.0.1:8080").unwrap();
+    stream.write(b"Hello World!");
+    println!("Client wrote message");
+}
+
+fn print_line(mut stream: TcpStream) {
+    let mut data = String::new();
+    match stream.read_to_string(&mut data) {
+        Ok(_) => {
+            println!("Received: {}", data);
+        },
+        Err(e) => {
+            println!("Read Error: {}", e.to_string());
+        }
+    }
+}
+
+fn run_server() {
+    let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
+    println!("Server is running");
+    for mut stream in listener.incoming() {
+        match stream {
+            Ok(stream) => {
+                println!("Found client");
+                print_line(stream);
+                break;
+            },
+            Err(e) => {
+                println!("Connection Error");
+            }
+        }
+    }
+}
+
+fn main() {
+    let server = thread::spawn(|| run_server());
+    sleep(time::Duration::from_millis(2000));
+    let client = thread::spawn(|| run_client());
+    server.join();
+    client.join();
+}
+</code></pre>
+<p>Output:</p>
+<pre><code class='bash'>
+cargo run
+   Compiling rust-connection v0.1.0 (/home/&lt;username&gt;/Desktop/rust-connection)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.26s
+     Running `target/debug/rust-connection`
+Server is running
+Client wrote message
+Found client
+Received: Hello World!
+</code></pre>
+{% endblock %}
