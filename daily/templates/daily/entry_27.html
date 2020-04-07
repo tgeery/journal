@@ -1,0 +1,41 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry follows the process of setting up <a href="https://www.youtube.com/watch?v=6oazLMHzJ7w">"How to Make a Private RTMP Server & Re-Stream to Twitch, YouTube, etc (Linux)"</a> using nginx and <a href="https://obsproject.com/">obs-studio</a> and vlc.</p>
+<h3>Install</h3>
+<p>Local nginx server</p>
+<pre><code class='bash'>sudo apt-get install nginx libnginx-mod-rtmp</code></pre>
+<p>OBS-Studio snap</p>
+<pre><code class='bash'>snap install obs-studio</code></pre>
+<h3>Setup server</h3>
+<pre><code class='bash'>sudo service nginx stop</code></pre>
+<p>modify /etc/nginx/nginx.conf, by remove http section, and adding:</p>
+<pre><code class='toml'>rtmp {
+        server {
+                listen 1935;
+                application live {
+                        live on;
+                        record off;
+                }
+        }
+}</code></pre>
+<pre><code class='bash'>sudo service nginx start</code></pre>
+<h3>Setup OBS-Studio</h3>
+<pre><code class='bash'>snap run obs-studio</code></pre>
+<p>Select Sources -> '+'<br />
+Select Text (FreeType 2)</p>
+<img src="{% static '/images/obs-studio_source_select.png' %}" alt="">
+<img src="{% static '/images/obs-studio_start_stream.png' %}" alt="">
+<h3>Setup VLC</h3>
+<p>Select Media->Open Network Stream<br />
+Enter URL: rtmp://127.0.0.1/live/test<br />
+Select Play<br />
+<img src="{% static '/images/vlc_rtmp_play.png' %}" alt="">
+</p>
+{% endblock %}
