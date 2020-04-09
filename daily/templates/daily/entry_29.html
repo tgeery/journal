@@ -1,0 +1,35 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes an issue I had with trying to perform 'make apk' which I learned was due to the Android emulator being offline.</p>
+<h3>Description</h3>
+<p>Attempt to build and install, but see error:</p>
+<pre><code class='bash'>qmake android.pro
+make
+make apk
+...
+Directory /opt/android/sdk/platforms does not exist
+make: *** [Makefile:538: apk] Error 2</code></pre>
+<p>Check emulator</p>
+<pre><code class='bash'>adb devices
+List of devices attached
+emulator-5554	offline</code></pre>
+<p>Enable Emulator USB debugging.<br/>
+Go to settings->About</p>
+<img src="{% static '/images/android_settings_list.png' %}" alt="">
+<p>Got to Build number and click it several times</p>
+<img src="{% static '/images/android_build_number.png' %}" alt="">
+<p>Enable USB debugging</p>
+<img src="{% static '/images/android_enable_usbdebug.png' %}" alt="">
+<p>Check emulator again</p>
+<pre><code class='bash'>adb devices
+List of devices attached
+emulator-5554	device</code></pre>
+<p>Building and installing should now work</p>
+{% endblock %}
