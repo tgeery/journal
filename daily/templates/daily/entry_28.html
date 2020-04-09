@@ -1,0 +1,40 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes building and running a video via RTMP using <a href="https://github.com/vlc-qt/vlc-qt">vlc-qt</a>.</p>
+<h3>Clone and build</h3>
+<p>Install pre-requisites(Note: need to use lua5.2 at time of this)</p>
+<pre><code class='bash'>sudo apt-get install lua5.2-dev liba52-dev libxcb-xv0-dev libxcb-randr0-dev</code></pre>
+<p>Build VLC libraries, in this case using full VLC project</p>
+<pre><code class='bash'>git clone --recursive git://git.videolan.org/vlc/vlc-3.0.git
+cd vlc-3.0
+./bootstrap
+./configure
+./compile
+sudo make install</code></pre>
+<p>Build Qt VLC library and test applications</p>
+<pre><code class='bash'>git clone --recursive git://github.com/vlc-qt/vlc-qt.git
+mkdir build
+cd build
+cmake ..
+make</code></pre>
+<h3>Run Using Local File</h3>
+<p>Edit tests/widgets/ui/Player.cpp</p>
+<pre><code class='cpp'>_media = new VlcMedia("file:///home/<username>/Videos/Dead_trees.mp4", _instance);</code></pre>
+<pre><code class='bash'>make
+./tests/widgets/Test_WidgetsPlayer</code></pre>
+<img src="{% static '/images/qtvlc_widget_play.png' %}" alt="">
+<h3>Run Using RTMP and obs-studio</h3>
+<p>Setup obs-studio from <a href="entry_27.html">last time</a></p>
+<p>Edit tests/widgets/ui/Player.cpp</p>
+<pre><code class='cpp'>_media = new VlcMedia("rtmp://localhost/live/test", _instance);</code></pre>
+<pre><code class='bash'>make
+./tests/widgets/Test_WidgetsPlayer</code></pre>
+<img src="{% static '/images/qtvlc_widget_rtmp.png' %}" alt="">
+{% endblock %}
