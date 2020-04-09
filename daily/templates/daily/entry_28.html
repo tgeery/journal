@@ -25,8 +25,8 @@ cd build
 cmake ..
 make</code></pre>
 <h3>Run Using Local File</h3>
-<p>Edit tests/widgets/ui/Player.cpp</p>
-<pre><code class='cpp'>_media = new VlcMedia("file:///home/<username>/Videos/Dead_trees.mp4", _instance);</code></pre>
+<p>Run using the widget cpp example. Edit tests/widgets/ui/Player.cpp</p>
+<pre><code class='cpp'>_media = new VlcMedia("file:///home/&lt;username&gt;/Videos/Dead_trees.mp4", _instance);</code></pre>
 <pre><code class='bash'>make
 ./tests/widgets/Test_WidgetsPlayer</code></pre>
 <img src="{% static '/images/qtvlc_widget_play.png' %}" alt="">
@@ -37,4 +37,7 @@ make</code></pre>
 <pre><code class='bash'>make
 ./tests/widgets/Test_WidgetsPlayer</code></pre>
 <img src="{% static '/images/qtvlc_widget_rtmp.png' %}" alt="">
+<p>Run using the qml example. Edit tests/qml/tst_video.qml:</p>
+<pre><code class='json'>url: "/home/&lt;username&gt;/Videos/Dead_trees.mp4"</code></pre>
+<pre><code class='bash'>QML2_IMPORT_PATH=/usr/local/qml ./Test_Qml</code></pre>
 {% endblock %}
