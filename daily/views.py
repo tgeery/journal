@@ -122,3 +122,11 @@ def entry_28(request):
 def entry_29(request):
     entry = Journal.objects.get(pk=29)
     return render(request, 'daily/entry_29.html', {'entry':entry})
+
+def entry_30(request):
+    entry = Journal.objects.get(pk=30)
+    return render(request, 'daily/entry_30.html', {'entry':entry})
+
+def entry_31(request):
+    entry = Journal.objects.get(pk=31)
+    return render(request, 'daily/entry_31.html', {'entry':entry})
