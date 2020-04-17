@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This post explains how I set up a raspberry pi to provide <a href="https://www.tecmint.com/setup-linux-as-router/">internet via ethernet</a> and providing an ad-blocker using <a href="https://pi-hole.net/">PiHole</a>.</p>

@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry describe basic setup and how to run a simple audio playback app using gstreamer as described in the <a href='https://gstreamer.freedesktop.org/documentation/application-development/basics/helloworld.html?gi-language=c'>GStreamer documentation</a>.</p>

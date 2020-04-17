@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry describes building <a href='https://gstreamer.freedesktop.org/modules/qt-gstreamer.html'>QtGStreamer module</a> from source and running the player example with a sample mp4 file.</p>

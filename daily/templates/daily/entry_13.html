@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry describes some basic SQL usage with PostgresSQL(<a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04">Digital Ocean tutorial</a> & <a href="https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-drop-database/">postgresqltutorial.com</a>) and MongoDB(<a href="https://beginnersbook.com/2017/09/mongodb-tutorial/">beginners book</a>).</p><br />

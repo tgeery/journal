@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry explains an intro to using Github actions and using <a href="https://github.com/nektos/act">act</a> to run actions locally.</p>

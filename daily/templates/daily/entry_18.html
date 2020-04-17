@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry describes the basic setup for an Nvidia Jetson Nano. The Nano is only connected using micro USB and uses a micro SD; however a keyboard, mouse, and HDMI were used to configure initial board bring up.</p>

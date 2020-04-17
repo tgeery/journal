@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry shows a way to create an animated gif from a sequence of EXR files, inspired by <a href='https://medium.com/swlh/python-animated-images-6a85b9b68f86'>Create Animated Images Using Python</a> and using code from <a href='https://excamera.com/articles/26/doc/intro.html'>OpenEXR Introduction and Cookbook</a>. This is not a very useful application when the same can be achieved with ffmpeg or imagemagick.</p>

@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry follows the process of setting up <a href="https://www.youtube.com/watch?v=6oazLMHzJ7w">"How to Make a Private RTMP Server & Re-Stream to Twitch, YouTube, etc (Linux)"</a> using nginx and <a href="https://obsproject.com/">obs-studio</a> and vlc.</p>

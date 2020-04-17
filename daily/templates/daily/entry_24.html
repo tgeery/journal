@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry describes compiling and running <a href="https://gitlab.freedesktop.org/gstreamer/gstreamer-rs/-/tree/master">rust gstreamer</a> examples.</p>

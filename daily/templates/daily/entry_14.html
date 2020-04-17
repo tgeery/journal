@@ -4,7 +4,7 @@
 {{ entry.title }}
 {% endblock %}
 
-{% load staticfiles %}
+{% load static %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
 <p>This entry describes basic usage of SQL migrations for Django using the <a href="https://docs.djangoproject.com/en/2.2/intro/tutorial02/">Tutorial 2 example</a>.</p>
