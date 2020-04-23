@@ -1,0 +1,38 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple way to use autotools to build for a 32-bit target platform as described <a href="https://developer.gnome.org/anjuta-build-tutorial/stable/create-autotools.html.en">here</a>.</p>
+<h3>Write Application</h3>
+<p>Create hello.cpp</p>
+<pre><code class='cpp'>#include <iostream>
+int main() { std::cout << "Hello World!\n"; }</code></pre>
+<p>Install GTK and GLIB for UI</p>
+<h3>Setup Autotools Environment</h3>
+<p>Create configure.ac</p>
+<pre><code class='bash'>AC_INIT([hello Program], 1.0)
+AM_INIT_AUTOMAKE
+AC_PROG_CXX
+AC_CONFIG_FILES(Makefile)
+AC_OUTPUT</code></pre>
+<p>Create other files</p>
+<pre><code class='bash'>touch NEWS README AUTHORS ChangeLog</code></pre>
+<h3>Build Project</h3>
+<p>Run commands</p>
+<pre><code class='bash'>autoconf
+aclocal
+automake --add-missing
+./configure CXX=clang++ --build=i686-pc-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32"
+make</code></pre>
+<h3>Check Binary</h3>
+<pre><code class='bash'>file hello
+hello: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, BuildID[sha1]=1c84a802f55e178fa9c159802676a0006c52ac7f, for GNU/Linux 3.2.0, not stripped
+
+./hello
+Hello World!</code></pre>
+{% endblock %}
