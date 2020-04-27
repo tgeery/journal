@@ -6,5 +6,75 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
-<p>Writing CPython bindings in C++ referencing <a href="https://tutorialedge.net/python/python-c-extensions-tutorial/">this site</a>.</p>
+<p>Writing Python bindings in C with ctypes referencing <a href="https://realpython.com/python-bindings-overview/#c-or-c-source">this site</a> and CPython bindings in C++ referencing <a href="https://tutorialedge.net/python/python-c-extensions-tutorial/">this site</a>.</p>
+<h3>C Example</h3>
+<p>Write C Library</p>
+<p>hello.h</p>
+<pre><code class='cpp'>#include &lt;stdio.h&gt;
+void print_hello();</code></pre>
+<p>hello.c</p>
+<pre><code class='cpp'>#include "hello.h"
+void print_hello() { printf("Hello World!\n"); }</code></pre>
+<p>Compile</p>
+<pre><code class='bash'>gcc -c -Wall -Werror -fpic hello.c
+gcc -shared -o libhello.so hello.o</code></pre>
+<p>Test</p>
+<pre><code class='bash'>python3
+Python 3.7.5 (default, Apr 19 2020, 20:18:17) 
+[GCC 9.2.1 20191008] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import ctypes
+>>> import pathlib
+>>> lib = ctypes.CDLL(pathlib.Path().absolute()/"libhello.so")
+>>> lib.print_hello()
+Hello World!</code></pre>
+<h3>C++ Example</h3>
+<p>Write C++ Library</p>
+<p>hello.h</p>
+<pre><code class='cpp'>#include &lt;Python.h&gt;
+#include &lt;iostream&gt;
+
+static PyObject * print_hello(PyObject * self, PyObject * args);</code></pre>
+<p>hello.cpp</p>
+<pre><code class='cpp'>#include "hello.h"
+
+static PyObject * print_hello(PyObject * self, PyObject * args)
+{
+        std::cout << "Hello World\n";
+        return Py_None;
+}
+
+static PyMethodDef myMethods[] = {
+        { "print_hello", print_hello, METH_NOARGS, "Prints hello" },
+        { NULL, NULL, 0, NULL }
+};
+
+static struct PyModuleDef hello = {
+        PyModuleDef_HEAD_INIT,
+        "hello",
+        "hello module",
+        -1,
+        myMethods
+};
+
+PyMODINIT_FUNC PyInit_hello(void)
+{
+        return PyModule_Create(&hello);
+}
+</code></pre>
+<p>Create setup.py and Compile and Install</p>
+<p>setup.py</p>
+<pre><code class='python'>from distutils.core import setup, Extension
+
+setup(name = 'hello', version = '1.0', ext_modules = [Extension('hello', ['hello.cpp'])])</code></pre>
+<pre><code class='bash'>python3 setup.py build
+python3 setup.py install</code></pre>
+<p>Test</p>
+<pre><code class='bash'>python3
+Python 3.7.5 (default, Apr 19 2020, 20:18:17) 
+[GCC 9.2.1 20191008] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import hello
+>>> hello.print_hello()
+Hello World</code></pre>
 {% endblock %}
