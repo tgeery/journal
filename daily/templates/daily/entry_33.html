@@ -1,0 +1,26 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple way to use the python opencv library to take a screenshot of your desktop.</p>
+<h3>Install Pre-requisites</h3>
+<pre><code class='bash'>sudo apt-get install python3-tk python3-dev scrot
+pip3 install pyautogui opencv-python</code></pre>
+<h3>Run Python Code</h3>
+<pre><code class='bash'>python3
+Python 3.7.5 (default, Apr 19 2020, 20:18:17) 
+[GCC 9.2.1 20191008] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pyautogui, cv2, numpy as np
+>>> cv2.imwrite("test.png", cv2.cvtColor(np.array(pyautogui.screenshot()), cv2.COLOR_RGB2BGR))
+True
+>>> quit()</code></pre>
+<h3>View Result</h3>
+<pre><code class='bash'>eog test.png</code></pre>
+<img src="{% static '/images/pyopencv_screenshot.png' %}">
+{% endblock %}
