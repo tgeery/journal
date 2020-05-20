@@ -1,0 +1,72 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple tutorial to perform a median filter using the itk library.</p>
+<h3>Using Python Code</h3>
+<p>Pip install library</p>
+<pre><code class='bash'>pip3 install itk</code></pre>
+<p>Create a simple image using Pillow.</p>
+<pre><code class='python'>from PIL import Image, ImageDraw, ImageFont
+orig = Image.new('RGB', (100, 100), color='white')
+font = ImageFont.truetype('FreeMono.ttf', 32)
+draw = ImageDraw.Draw(orig)
+draw.text((0,0), 'TEST', (0, 0, 0), font=font)
+orig.save('sample.png')</code></pre>
+<p>Perform filter using itk.</p>
+<pre><code class='python'>import itk
+img = itk.ImageFileReader[itk.Image[itk.UC, 2]].New()
+img.SetFileName('sample.png')
+med = itk.MedianImageFilter[itk.Image[itk.UC, 2], itk.Image[itk.UC, 2]].New()
+med.SetInput(img.GetOutput())
+out = itk.ImageFileWriter[itk.Image[itk.UC, 2]].New()
+out.SetFileName('test.png')
+out.SetInput(med.GetOutput())
+out.Update()</code></pre>
+<p>View Results</p>
+<img src="{% static '/images/sample.png' %}">
+<img src="{% static '/images/test.png' %}">
+<h3>Using C++ Example</h3>
+<p>Download source and build it</p>
+<pre><code class='bash'>wget https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.0.1/InsightToolkit-5.0.1.tar.gz
+tar -xvf InsightToolkit-5.0.1.tar.gz
+cd InsightToolkit-5.0.1/
+mkdir build
+cd build
+cmake -DITK_BUILD_DEFAULT_MODULES:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON ..
+make</code></pre>
+<p>Run example program</p>
+<pre><code class='bash'>./bin/MedianImageFilter ../../sample.png ../../median_example.png</code></pre>
+<img src="{% static '/images/sample.png' %}">
+<img src="{% static '/images/median_example.png' %}">
+<p>Looking at MedianImageFilter.cxx</p>
+<p>Initialization of image.</p>
+<pre><code class='cpp'>using ReaderType = itk::ImageFileReader< InputImageType  >;
+using WriterType = itk::ImageFileWriter< OutputImageType >;
+
+ReaderType::Pointer reader = ReaderType::New();
+WriterType::Pointer writer = WriterType::New();
+
+reader->SetFileName( argv[1] );
+writer->SetFileName( argv[2] );</code></pre>
+<p>Performing median filter.</p>
+<pre><code class='cpp'>using FilterType = itk::MedianImageFilter<
+               InputImageType, OutputImageType >;
+
+FilterType::Pointer filter = FilterType::New();
+InputImageType::SizeType indexRadius;
+
+  indexRadius[0] = 1; // radius along x
+  indexRadius[1] = 1; // radius along y
+
+  filter->SetRadius( indexRadius );</code></pre>
+<p>Saving file.</p>
+<pre><code class='cpp'>filter->SetInput( reader->GetOutput() );
+  writer->SetInput( filter->GetOutput() );
+  writer->Update();</code></pre>
+{% endblock %}
