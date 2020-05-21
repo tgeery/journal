@@ -1,0 +1,60 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple setup of Jenkins to check a Django project.</p>
+<h3>Setup Jenkins Snap</h3>
+<pre><code class='bash'>snap install jenkins
+snap run jenkins</code></pre>
+<h3>Jenkins to Check Django Blog</h3>
+<p>Setup username and password. Then select freestyle project.</p>
+<img src="{% static '/images/jenkins_blog_select_project.png' %}">
+<p>In the 'Build' section, within the 'Execute shell' enter:</p>
+<pre><code class='bash'>cd /home/<username>/develop/blog
+/usr/bin/pip3 install django psycopg2
+/usr/bin/python3 manage.py check
+/usr/bin/python3 manage.py test</code></pre>
+<p>Within Jenkins project click 'Build Now'. Verify that it succeeds in 'Build History'.</p>
+<img src="{% static '/images/jenkins_blog_history.png' %}">
+<p>View log within Jenkins project.</p>
+<img src="{% static '/images/jenkins_blog_output.png' %}">
+<p>View log within terminal.</p>
+<pre><code class='bash'>cat /var/snap/jenkins/current/jobs/blog_ci/builds/5/log 
+Started by user ha:////4PdQOp+TSb2VkGwhJAMj483Feu7JppGD6o2IdfaDQ5dqAAAAmR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAy2EgZe/dLi1CL99NTUoqT8EgBCfrhUwgAAAA==
+Running as SYSTEM
+Building in workspace /var/snap/jenkins/1091/workspace/blog_ci
+[blog_ci] $ /bin/sh -xe /tmp/jenkins11869865694830470358.sh
++ cd /home/<username>/develop/blog
++ /usr/bin/pip3 install django psycopg2
+Requirement already satisfied: django in /usr/local/lib/python3.8/dist-packages (3.0.6)
+Collecting psycopg2
+  Using cached psycopg2-2.8.5.tar.gz (380 kB)
+Requirement already satisfied: sqlparse>=0.2.2 in /usr/local/lib/python3.8/dist-packages (from django) (0.3.1)
+Requirement already satisfied: pytz in /usr/lib/python3/dist-packages (from django) (2019.3)
+Requirement already satisfied: asgiref~=3.2 in /usr/local/lib/python3.8/dist-packages (from django) (3.2.7)
+Building wheels for collected packages: psycopg2
+  Building wheel for psycopg2 (setup.py): started
+  Building wheel for psycopg2 (setup.py): finished with status 'done'
+  Created wheel for psycopg2: filename=psycopg2-2.8.5-cp38-cp38-linux_x86_64.whl size=504533 sha256=55a603b3b698df927db01e58983aa5040abab0ac3a93508c8d022cdf053bc766
+  Stored in directory: /root/.cache/pip/wheels/35/64/21/9c9e2c1bb9cd6bca3c1b97b955615e37fd309f8e8b0b9fdf1a
+Successfully built psycopg2
+Installing collected packages: psycopg2
+Successfully installed psycopg2-2.8.5
++ /usr/bin/python3 manage.py check
+System check identified no issues (0 silenced).
++ /usr/bin/python3 manage.py test
+Creating test database for alias 'default'...
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+OK
+Destroying test database for alias 'default'...
+System check identified no issues (0 silenced).
+Finished: SUCCESS</code></pre>
+{% endblock %}
