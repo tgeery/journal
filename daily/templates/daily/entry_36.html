@@ -1,11 +1,23 @@
-from django.test import TestCase
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple implementation of <a href="https://docs.djangoproject.com/en/3.0/topics/testing/overview/">Django tests</a>.</p>
+<h3>Performing Tests for a Django Blog</h3>
+<p>Create a file tests.py within app directory.</p>
+<pre><code class='python'>from django.test import TestCase
 from django.db import models
 #from daily.models import Journal
 import sqlite3
 
 import os
 
-bad_words = ['Travis','travis','/home']
+bad_words = ['Name','name','/home']
 
 class StaticTestCases(TestCase):
     def test_no_bad_words(self):
@@ -26,4 +38,15 @@ class StaticTestCases(TestCase):
         values = query.fetchall()[0]
         assert values[0] == 1, 'Invalid index number {}'.format(values[0])
         assert values[1] == 'Setting Up Blog with Django', 'Invalid title'
-        assert values[2] == '2019-12-07 02:08:00', 'Invalid date'
+        assert values[2] == '2019-12-07 02:08:00', 'Invalid date'</code></pre>
+<p>Run tests.</p>
+<pre><code class='bash'>python3 manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK
+Destroying test database for alias 'default'...</code></pre>
+{% endblock %}
