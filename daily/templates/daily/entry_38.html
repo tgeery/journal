@@ -1,0 +1,67 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple setup of a MySQL Server on Ubuntu and a C++ application to query a statement.</p>
+<h3>Install MySQL Server</h3>
+<p>Install MySQL server with apt.</p>
+<pre><code class='bash'>sudo apt-get install mysql-server</code></pre>
+<p>Verify server is running.</p>
+<pre><code class='bash'>systemctl status mysql</code></pre>
+<h3>Command-line Usage</h3>
+<p>Create database</p>
+<pre><code class='bash'>sudo mysql
+>show databases;
+>show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+>create database TestDB;</code></pre>
+<p>Create User</p>
+<pre><code class='bash'>>create user user@localhost identified by 'pass';
+>grant all on TestDB.* to user@localhost;
+>use TestDB;</code></pre>
+<p>Create Table</p>
+<pre><code class='bash'>>create table mytable (msg varchar(20));
+>insert into mytable values ('hello world');</code></pre>
+<h3>C++ Code</h3>
+<pre><code class='cpp'>#include &lt;stdlib.h&gt;
+#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+#include &lt;stdexcept&gt;
+#include "mysql_connection.h"
+#include &lt;cppconn/driver.h&gt;
+#include &lt;cppconn/exception.h&gt;
+#include &lt;cppconn/resultset.h&gt;
+#include &lt;cppconn/statement.h&gt;
+#include &lt;cppconn/prepared_statement.h&gt;
+
+int main() {
+	try {
+		sql::Driver * driver = get_driver_instance();
+		std::unique_ptr<sql::Connection> con(driver->connect("localhost", "user", "pass"));
+		con->setSchema("TestDB");
+		sql::Statement * stmt = con->createStatement();
+		sql::ResultSet * res = stmt->executeQuery("SELECT * FROM mytable;");
+		while(res->next()) {
+			std::cout << res->getString(1) << "\n";
+		}
+	} catch (sql::SQLException &e) {
+		std::cout << "Error(" << e.getErrorCode() << "): " << e.getSQLState() << "\n";
+	}
+	return 0;
+}</code></pre>
+<pre><code class='bash'>g++ -L/usr/local/lib main.cpp -lmysqlcppconi
+./a.out
+hello world</code></pre>
+{% endblock %}
