@@ -1,0 +1,80 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple setup of <a href='https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-ver15'>MSSQL</a> Server on Ubuntu and a C++ application to query a statement using <a href='https://www.sqlapi.com/HowTo/'>SQLAPI</a>.</p>
+<h3>Install MSSQL Server</h3>
+<pre><code class='bash'>sudo apt-get install libc++abi1-10
+sudo apt-get install libc++1
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/18.04/mssql-server-2019.list)"
+sudo apt-get install -y mssql-server
+sudo /opt/mssql/bin/mssql-conf setup</code></pre>
+<h3>Install Command-line Usage</h3>
+<pre><code class='bash'>curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
+sudo apt-get update
+sudo apt-get install mssql-tools unixodbc-dev</code></pre>
+<p>Notice the error: PreDepends: multiarch-support but it is not installable</p>
+<pre><code class='bash'>wget ftp://ftp.unixodbc.org/pub/unixODBC/unixODBC-2.3.7.tar.gz
+tar -xvf unixODBC-2.3.7.tar.gz
+cd unixODBC-2.3.7/
+./configure
+make
+sudo make install
+
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+source ~/.bashrc
+
+wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1_amd64.deb
+sudo dpkg --install multiarch-support_2.27-3ubuntu1_amd64.deb
+sudo apt-get update
+sudo apt-get install multiarch-support
+sudo apt-get install libodbc1
+sudo apt-get install odbcinst1debian2
+sudo apt-get install unixodbc-dev
+sudo apt-get install mssql-tools unixodbc-dev</code></pre>
+<p>Run command-line tool</p>
+<pre><code class='bash'>sqlcmd -S localhost -U SA -P <password></code></pre>
+<h3>Install SQLAPI and Run C++ Application</h3>
+<pre><code class='bash'>wget https://www.sqlapi.com/Download/sqlapi_trial.tar.gz
+tar -xvf sqlapi_trial.tar.gz
+cd SQLAPI
+tar -xvf g++-7.2_amd64.tar.gz</code></pre>
+<p>Write C++ code.</p>
+<pre><code class='cpp'>#include &lt;iostream&gt;
+#include &lt;SQLAPI.h&gt;
+
+int main(int argc, char * argv[])
+{
+	SAConnection con;
+	try
+	{
+		con.Connect("TestDB", "SA", "P@ssw0rd", SA_SQLServer_Client);
+		std::cout << "We're connected\n";
+		con.Disconnect();
+		std::cout << "We are disconnected\n";
+	} catch(SAException &x) {
+		std::cerr << "Error connecting: " << (const char *)x.ErrText() << "\n";
+	}
+	return 0;
+}</code></pre>
+<p>Compile C++ code, but requires a license.</p>
+<pre><code class='bash'>g++ -Wl,-rpath=../SQLAPI/lib -I../SQLAPI/include -L../SQLAPI/lib sqlapi_example.cpp -lsqlapi -ldl
+./a.out
+Error connecting: Trial version exception:
+Thank you for trying SQLAPI++ Library.
+
+This version is for evaluation purpose only.
+You can register SQLAPI++ using online registration service.
+
+For additional information visit:
+    SQLAPI++ Home (http://www.sqlapi.com)
+For help on using the Library e-mail to:
+    howto@sqlapi.com</code></pre>
+{% endblock %}
