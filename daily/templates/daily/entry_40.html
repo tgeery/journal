@@ -1,0 +1,41 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple setup of <a href='https://www.digitalocean.com/community/tutorials/how-to-set-up-a-jekyll-development-site-on-ubuntu-16-04'>jekyll</a> as a blog site and an initial <a href='https://jekyllrb.com/docs/posts/'>page</a>.</p>
+<h3>Install Pre-requisites</h3>
+<pre><code class='bash'>sudo apt-get install ruby ruby-dev make build-essential
+sudo gem install jekyll bundler</code></pre>
+<h3>Setup Project</h3>
+<pre><code class='bash'>jekyll new site
+tree site/
+site/
+├── 404.html
+├── about.markdown
+├── _config.yml
+├── Gemfile
+├── Gemfile.lock
+├── index.markdown
+└── _posts
+    └── 2020-05-26-welcome-to-jekyll.markdown
+
+1 directory, 7 files
+cd site
+jekyll serve --host=127.0.0.1</code></pre>
+<img src="{% static '/images/jekyll_home_page.png' %}">
+<h3>Add an Entry to the Project</h3>
+<pre><code class='bash'>vim _posts/2020-05-26-entry-1.md</code></pre>
+<pre><code class='markdown'>---
+layout: post
+title: "Entry 1"
+---
+This is my first entry.
+jekyll serve --host=127.0.0.1</code></pre>
+<img src="{% static '/images/jekyll_home_entry1.png' %}">
+<img src="{% static '/images/jekyll_entry1_page.png' %}">
+{% endblock %}
