@@ -1,0 +1,17 @@
+{% extends "generic.html" %}
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This is a reference to networking Open Systems Interconnection(OSI) model layers as described on <a href="https://www.computernetworkingnotes.com/ccna-study-guide/osi-seven-layers-model-explained-with-examples.html">www.computernetworkingnotes.com</a> and <a href="https://www.plixer.com/blog/network-layers-explained/">www.plixer.com/</a>.</p>
+<h3>OSI Layers</h3>
+<p>physical layer (e.g. Ethernet, USB, Bluetooth) <br />
+data link layer (e.g. MAC, PPP, 802.3, 802.11) <br />
+network layer (e.g. IP, router, packet) <br />
+transport layer (e.g. segmentation, TCP, UDP) <br />
+session layer (e.g. syn/ack, full-duplex, half-duplex, RPC, NFS) <br />
+presentation layer (e.g. XML, ASCII, PNG) <br />
+application layer (e.g. HTTP, SSH, FTP, TFTP)</p>
+{% endblock %}
