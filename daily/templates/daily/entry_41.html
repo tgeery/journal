@@ -1,0 +1,143 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a quick setup of a React app implementation of <a href='https://reactjs.org/tutorial/tutorial.html'>tic tac toe</a>.</p>
+<h3>Install Pre-requisites</h3>
+<pre><code class='bash'>sudo apt-get install npm</code></pre>
+<h3>Setup Project</h3>
+<pre><code class='bash'>npx create-react-app tictactoe
+cd tictactoe</code></pre>
+<p>Edit src/index.js</p>
+<pre><code class='js'>import React from 'react';
+import logo from './logo.svg';
+import './index.css';
+import ReactDOM from 'react-dom';
+
+class Square extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			value: null,
+		};
+	}
+
+	render() {
+		return (
+			&lt;button className="square" onClick={() => this.props.onClick()}&gt;
+				{this.props.value}
+			&lt;/button&gt;
+		);
+	}
+}
+
+class Board extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			squares: Array(9).fill(null),
+			xIsNext: true,
+		};
+	}
+
+	handleClick(i) {
+		const squares = this.state.squares.slice();
+		squares[i] = this.state.xIsNext ? 'X' : 'O';
+		this.setState({squares: squares, xIsNext: !this.state.xIsNext,});
+	}
+
+	renderSquare(i) {
+		return &lt;Square value={this.state.squares[i]}
+			onClick={() => this.handleClick(i)}
+		/&gt;;
+	}
+
+	render() {
+		const status = 'Next player: X';
+		return (
+			&lt;div&gt;
+				&lt;div className="status"&gt;{status}&lt;/div&gt;
+				&lt;div className="board-now"&gt;
+					{this.renderSquare(0)}
+					{this.renderSquare(1)}
+					{this.renderSquare(2)}
+				&lt;/div&gt;
+				&lt;div className="board-now"&gt;
+					{this.renderSquare(4)}
+					{this.renderSquare(5)}
+					{this.renderSquare(6)}
+				&lt;/div&gt;
+				&lt;div className="board-now"&gt;
+					{this.renderSquare(7)}
+					{this.renderSquare(8)}
+					{this.renderSquare(9)}
+				&lt;/div&gt;
+			&lt;/div&gt;
+		);
+	}
+}
+
+class Game extends React.Component {
+	render() {
+		return (
+			&lt;div className="game"&gt;
+				&lt;div className="game-board"&gt;
+					&lt;Board /&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		)
+	}
+}
+
+ReactDOM.render(
+	&lt;Game /&gt;, 
+	document.getElementById('root')
+);</code></pre>
+<p>Edit src/index.css</p>
+<pre><code class='js'>body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}</code></pre>
+<pre><code class='bash'>npm start</code></pre>
+<img src="{% static '/images/react_tictactoe_board.png' %}" />
+{% endblock %}
