@@ -1,0 +1,129 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a quick setup of a React app with <a href='https://react-bootstrap.github.io/getting-started/introduction'>bootstrap</a>.</p>
+<h3>Install Pre-requisites</h3>
+<pre><code class='bash'>npm install react-bootstrap bootstrap</code></pre>
+<h3>Setup Project</h3>
+<pre><code class='bash'>npx create-react-app project
+cd project</code></pre>
+<p>Edit src/App.js</p>
+<pre><code class='js'>import React from 'react';
+import logo from './logo.svg';
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import Container from 'react-bootstrap/Container';
+import './App.css';
+
+function App() {
+  return (
+  &lt;Container&gt;
+	&lt;nav class="navbar navbar-expand-sm navbar-static-top bg-dark navbar-dark"&gt;
+	  &lt;form class="navbar-form"&gt;
+	    &lt;input type="text" class="span1" placeholder="username"/&gt;
+	    &lt;input type="text" class="span1" placeholder="password"/&gt;
+	    &lt;button type="submit" class="btn" className="statusbutton"&gt;Login&lt;/button&gt;
+	  &lt;/form&gt;
+	&lt;/nav&gt;
+	&lt;Jumbotron&gt;
+      &lt;h1 className="header"&gt;Welcome To React-Bootstrap&lt;/h1&gt;
+    &lt;/Jumbotron&gt;
+	&lt;div class="navbar" className="menu"&gt;
+	  &lt;div class="navbar-inner"&gt;
+	    &lt;ul class="nav"&gt;
+	      &lt;li&gt;&lt;a className="menuitem" href="#"&gt;Surveys&lt;/a&gt;&lt;/li&gt;
+	      &lt;li&gt;&lt;a className="menuitem" href="#"&gt;Predictions&lt;/a&gt;&lt;/li&gt;
+	    &lt;/ul&gt;
+	  &lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class="navbar" className="menusearch"&gt;
+	  &lt;form class="navbar-search"&gt;
+	    &lt;input type="text" class="search-query" className="menusearchitem" placeholder="Search" /&gt;
+	  &lt;/form&gt;
+	&lt;/div&gt;
+  &lt;/Container&gt;
+  );
+}
+
+export default App;
+</code></pre>
+<p>Edit src/App.css</p>
+<pre><code class='js'>.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.header {
+  text-align: center;
+}
+
+.statusbutton {
+  border: solid;
+}
+
+.statusbutton:hover {
+  background-color: gray;
+}
+
+.menu {
+}
+
+.menuitem {
+  color: #888888;
+  margin: 10px;
+}
+
+.menuitem:hover {
+  color: darkgray;
+  text-decoration: none
+}
+
+.menusearch {
+}
+
+.menusearchitem {
+  width: 100%;
+}
+</code></pre>
+<pre><code class='bash'>npm start</code></pre>
+<img src="{% static '/images/react_project_display.png' %}" />
+{% endblock %}
