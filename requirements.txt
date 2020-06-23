@@ -22,7 +22,7 @@ google-auth-oauthlib==0.4.1
 google-pasta==0.2.0
 grpcio==1.29.0
 h5py==2.10.0
-httplib2==0.14.0
+httplib2==0.18.0
 idna==2.8
 itk==5.1.0
 itk-core==5.1.0
