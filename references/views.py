@@ -10,3 +10,7 @@ def index(request):
 def entry_1(request):
     entry = Reference.objects.get(pk=1)
     return render(request, 'references/entry_1.html', {'entry':entry})
+
+def entry_2(request):
+    entry = Reference.objects.get(pk=2)
+    return render(request, 'references/entry_2.html', {'entry':entry})

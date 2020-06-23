@@ -1,0 +1,15 @@
+{% extends "generic.html" %}
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This is a list of references for interview prep.</p>
+<h3>Coding</h3>
+<ul><li><a href='https://leetcode.com/'>leetcode</a></li>
+<li><a href='https://www.algoexpert.io/product'>algoexpert</a></li>
+</ul>
+<h3>Systems</h3>
+<ul><li><a href='https://employbl.com/blog/tech-interview-prep-resources-software-engineers'>cheat sheet</a></li></ul>
+{% endblock %}
