@@ -1,0 +1,46 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes setting up a npm server integrating a webassembly library written in Rust as explained in <a href="https://rustwasm.github.io/docs/book/print.html">Conway's Game of Life</a>. This demo uses a Javascript front-end, makes a call to webassembly, passes a variable in, and retrieves a variable synchronously.</p>
+<h3>Setup Rust Library</h3>
+<p>Pull down a Rust template and follow instructions to name project.</p>
+<pre><code class='bash'>cargo generate --git https://github.com/rustwasm/wasm-pack-template
+tree wasm-game-of-life
+wasm-game-of-life/
+├── Cargo.toml
+├── LICENSE_APACHE
+├── LICENSE_MIT
+├── README.md
+└── src
+    ├── lib.rs
+    └── utils.rs
+cd wasm-game-of-life</code></pre>
+<p>Slighty modify the src/lib.rs file.</p>
+<pre><code class='rust'>#[wasm_bindgen]
+pub fn greet(s: String) -> String {
+    let st = format!("Hello {}, test wasm-game-of-life!", s);
+    alert(&st);
+    format!("Yay, I work")
+}</code></pre>
+<p>Build the rust library.</p>
+<pre><code class='bash'>wasm-pack build</code></pre>
+<p>Create npm project.</p>
+<pre><code class='bash'>npm init wasm-app www
+cd www</code></pre>
+<p>Slighty modify index.js</p>
+<pre><code class='js'>var s = wasm.greet("John");
+document.body.textContent = s;</code></pre>
+<p>Slightly modify package.json</p>
+<pre><code class='json'>"dependencies": {
+    "wasm-game-of-life": "file:../pkg"
+  }</code></pre>
+<p>Install libraries and start server</p>
+<pre><code class='bash'>npm install
+npm run start</code></pre>
+{% endblock %}
