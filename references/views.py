@@ -14,3 +14,7 @@ def entry_1(request):
 def entry_2(request):
     entry = Reference.objects.get(pk=2)
     return render(request, 'references/entry_2.html', {'entry':entry})
+
+def entry_3(request):
+    entry = Reference.objects.get(pk=3)
+    return render(request, 'references/entry_3.html', {'entry':entry})

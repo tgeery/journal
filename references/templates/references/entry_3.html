@@ -1,0 +1,46 @@
+{% extends "generic.html" %}
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This is a list of references for linux screen utility.</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Keys</th>
+			<th scope="col">Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>ctrl + a, |</td>
+			<td>New Window Vertically</td>
+		</tr>
+		<tr>
+			<td>ctrl + a, S</td>
+			<td>New Window Horizontally</td>
+		</tr>
+		<tr>
+			<td>ctrl + a, X</td>
+			<td>Close Current Window</td>
+		</tr>
+		<tr>
+			<td>ctrl + a , tab</td>
+			<td>Next Window</td>
+		</tr>
+		<tr>
+			<td>ctrl + a , d</td>
+			<td>Detach Window</td>
+		</tr>
+		<tr>
+			<td>ctrl + a , n</td>
+			<td>Duplicate Session</td>
+		</tr>
+		<tr>
+			<td>ctrl + a , c</td>
+			<td>New Session</td>
+		</tr>
+	</tbody>
+{% endblock %}

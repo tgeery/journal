@@ -1,2 +1,2 @@
-[![Build Status](https://travis-ci.com/tgeery/blog.svg?branch=master)](https://travis-ci.com/tgeery/blog)
+[![Build Status](https://travis-ci.com/tgeery/journal.svg?branch=master)](https://travis-ci.com/tgeery/journal)
 # journal
