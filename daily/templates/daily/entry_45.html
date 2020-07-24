@@ -1,0 +1,66 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes getting started with Qt5 using opengl with a simple tutorial to display a triangle using <a href="https://www.youtube.com/watch?v=1nzHSkY4K18t">this tutorial</a>.</p>
+<h3>Setup Project</h3>
+<p>Create a "Sample" Qt Application and modify the sample.pro file</p>
+<pre><code class='bash'>QT += core gui opengl
+LIBS += -lopengl32</code></pre>
+<h3>Setup UI Form</h3>
+<p>Add a Widget component to the window then right click and select Promote to and add a class named GLWidget(which will be created later).</p>
+<img src='{% static "/images/qtopengl_ui_promote.png" %}' />
+<h3>Create Header</h3>
+<p>Create new GLWidget header file.</p>
+<pre><code class='cpp'>#ifndef QGLWIDGET_H
+#define QGLWIDGET_H
+
+#include <QGLWidget>
+
+class GLWidget : public QGLWidget
+{
+    Q_OBJECT
+public:
+    explicit GLWidget(QWidget * parent = 0);
+
+protected:
+    void initializeGL();
+    void paintGL();
+    void resizeGL(int w, int h);
+    void draw();
+};
+
+#endif // QGLWIDGET_H</code></pre>
+<h3>Create Implementation</h3>
+<p>Create new GLWidget implementation cpp file.</p>
+<pre><code class='cpp'>#include "glwidget.h"
+
+GLWidget::GLWidget(QWidget * parent) : QGLWidget(parent)
+{
+}
+
+void GLWidget::initializeGL()
+{
+    glClearColor(0,0,0,1);
+}
+
+void GLWidget::paintGL()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1,0,0);
+    glBegin(GL_TRIANGLES);
+        glVertex3f(-0.9,-0.9,0);
+        glVertex3f(-0.1,-0.9,0);
+        glVertex3f(-0.4,0.2,0);
+    glEnd();
+}
+
+void GLWidget::resizeGL(int w, int h)
+{}</code></pre>
+<img src='{% static "/images/qtopengl_exe_window.png" %}' />
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes getting started with Microsoft Visual Studio using <a href="https://www.transmissionzero.co.uk/software/freeglut-devel/">glut</a> to display a teapot using <a href="https://www.youtube.com/watch?v=1nzHSkY4K18t">this tutorial</a>.</p>
+<h3>Setup Project</h3>
+<p>Download GLUT zip file from https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MSVC.zip</p>
+<p>Recommended to set project to x64.</p>
+<p>set include path<br/>
+properties->C/C++->General->Additional Include Directories<br/>
+C:\Users\name\path\to\freeglut-MSVC-3.0.0-2.mp\freeglut\include<br/>
+<br/>
+set path to static .lib<br/>
+properties->Linker->General->Additional Library Directories<br/>
+C:\Users\name\path\to\freeglut-MSVC-3.0.0-2.mp\freeglut\lib\x64<br/>
+<br/>
+set runtime path to .dll <br/>
+properties->Debugging->Environment<br/>
+PATH=C:\Users\name\path\to\freeglut-MSVC-3.0.0-2.mp\freeglut\bin\x64</p><br/>
+<h3>Create Implementation</h3>
+<pre><code class='cpp'>#include <iostream>
+#include "GL/glut.h"
+
+void display(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glutWireTeapot(0.6);
+	glutSwapBuffers();
+}
+
+int main(int argc, char * argv[]) {
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(500, 500);
+	glutCreateWindow("GLUT Test");
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+</code></pre>
+<img src='{% static "/images/msvc_exe_window.png" %}' />
+{% endblock %}
