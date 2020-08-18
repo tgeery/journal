@@ -118,6 +118,5 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+WSGI_APPLICATION = 'blog.wsgi.application'
 STATIC_URL = '/static/'
-STATIC_ROOT = 'staticfiles'
