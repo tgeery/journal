@@ -1,0 +1,33 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes setting up a simple job with Airflow from the pip package manager using <a href="https://towardsdatascience.com/a-complete-introduction-to-apache-airflow-b7e238a33df">this tutorial</a>.</p>
+<h3>Install Airflow</h3>
+<p>Install airflow through pip.</p>
+<pre><code class='bash'>pip3 install apache-airflow</code></pre>
+<h3>Start Airflow Server</h3>
+<p>In an open terminal run the following:</p>
+<pre><code class='bash'>airflow webserver -p 8080
+airflow scheduler</code></pre>
+<h3>Create Airflow Job</h3>
+<p>In another terminal run the following:</p>
+<pre><code class='bash'>airflow run tutorial sleep 2020-08-26</code></pre>
+<p>Verify the first terminal verify job updates.</p>
+<pre><code class='bash'>[2020-08-26 12:47:10,263] {scheduler_job.py:961} INFO - 2 tasks up for execution:
+	<TaskInstance: tutorial.sleep 2020-08-25 00:00:00+00:00 [scheduled]>
+	<TaskInstance: tutorial.templated 2020-08-25 00:00:00+00:00 [scheduled]>
+[2020-08-26 12:47:10,265] {scheduler_job.py:994} INFO - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 2 task instances ready to be queued
+[2020-08-26 12:47:10,265] {scheduler_job.py:1023} INFO - DAG tutorial has 0/16 running and queued tasks
+[2020-08-26 12:47:10,265] {scheduler_job.py:1023} INFO - DAG tutorial has 1/16 running and queued tasks
+[2020-08-26 12:47:10,267] {scheduler_job.py:1084} INFO - Setting the following tasks to queued state:
+	<TaskInstance: tutorial.sleep 2020-08-25 00:00:00+00:00 [scheduled]>
+	<TaskInstance: tutorial.templated 2020-08-25 00:00:00+00:00 [scheduled]></code></pre>
+<p>Verify using the browser by going to the localhost server, then selecting the Browse tab, and clicking Jobs.</p>
+<img src="{% static 'images/airflow_running_jobs.png' %}" alt="">
+{% endblock %}
