@@ -1,0 +1,33 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes setting up a simple docker container to run a Django server with sqlite3.</p>
+<h3>Run with Docker Command Line</h3>
+<pre><code class='bash'>docker run -it --mount type=bind,source="$(pwd)",target="/tmp/blog" -p 8000:8000 python:3 /bin/bash
+cd /tmp/blog
+pip3 install django psycopg2 dj_static
+python3 manage.py runserver 0.0.0.0:8000</code></pre>
+<h3>Setup Docker files</h3>
+<p>Write Dockerfile</p>
+<pre><code class='bash'>FROM python:3
+COPY . /tmp/blog
+WORKDIR /tmp/blog
+RUN pip3 install django psycopg2 dj_static</code></pre>
+<p>Write docker-compose.yml</p>
+<pre><code class='bash'>version: "3"
+
+services:
+  web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/tmp/blog
+    ports:
+      - "8000:8000"</code></pre>
+{% endblock %}
