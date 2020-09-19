@@ -1,0 +1,37 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes setting up a simple <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html">Celery</a> task using <a href="https://www.rabbitmq.com/">Rabbitmq.</a></p>
+<h3>Install Rabbitmq and Celery</h3>
+<pre><code class='bash'>sudo apt-get install rabbitmq-server
+pip3 install celery</code></pre>
+<h3>Start Rabbitmq</h3>
+<pre><code class="bash">sudo service rabbitmq-server start
+rabbitmq-plugins enable rabbitmq_management</code></pre>
+<p>Verify web interface is running at localhost:15672/#/ and login with guest:guest</p>
+<h3>Start Celery Worker</h3>
+<p>Create a worker.py file<p>
+<pre><code class="python">from celery import Celery
+
+app = Celery(backend='amqp') #'tasks', broker='amqp://guest@localhost//', backend='amqp')
+
+@app.task
+def myadd(a,b):
+    return a+b
+</code></pre>
+<p>Run service in its own terminal instance.</p>
+<pre><code class="bash">celery -A worker worker --loglevel=info</code></pre>
+<h3>Send Task Message</h3>
+<p>Run python idl in the same directory and import file from previous section.</p>
+<pre><code class="bash">python3
+from worker import myadd
+res = myadd.delay(2,6)
+res.get()</code></pre>
+<p>Verify the worker instance displays something like: 'succeeded in 0.017666799991275184s: 8'</p>
+{% endblock %}
