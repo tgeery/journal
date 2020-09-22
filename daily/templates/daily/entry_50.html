@@ -1,11 +1,16 @@
 {% extends "generic.html" %}
 
 {% block header %}
-Journal Entries
+{{ entry.title }}
 {% endblock %}
 
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% block content %}
-<script type="text/javascript">
+<p>This entry describes adding a search bar using javascript snippets within a Django template project.</p>
+<h3>Add Javascript to Template</h3>
+<p>Javascript code will simply create a list of 'Entry' items when the page is loaded. Then on keydown will only display strings including the search string.</p>
+<pre><code class='html'>
     let lst = [];
     function Entry(l,c,d,t) {
         this.lnk = l;
@@ -36,13 +41,14 @@ Journal Entries
             document.getElementById("entryContent").innerHTML = "No entries found.";
         }
     }
-</script>
-<form><input type="text" class="form-control" id="search_entry" name="search_entry" placeholder="Search..." onkeydown="displayEntries()"></form>
-{% for entry in entries %}
-    {% with forloop.revcounter|stringformat:"i" as i %}
-    <script>addEntry("{{'entry_'|add:i }}","{{forloop.revcounter}}","{{entry.date}}","{{entry.title}}");</script>
-    {% endwith %}
-{% endfor %}
-<p id="entryContent"></p>
-<script>displayEntries();</script>
+</code></pre>
+<h3>Modify HTML Template</h3>
+<pre><code class="html">&lt;form&gt;&lt;input type="text" class="form-control" id="search_entry" name="search_entry" placeholder="Search..." onkeydown="displayEntries()"&gt;&lt;/form&gt;
+&#123;% for entry in entries %&#125;
+    &#123;% with forloop.revcounter|stringformat:"i" as i %&#125;
+        &lt;script&gt;addEntry("&#123;&#123;'entry_'|add:i &#125;&#125;","&#123;&#123;forloop.revcounter&#125;&#125;","&#123;&#123;entry.date&#125;&#125;","&#123;&#123;entry.title&#125;&#125;");&lt;/script&gt;
+    &#123;% endwith %&#125;
+&#123;% endfor %&#125;
+&lt;p id="entryContent"&gt;&lt;/p&gt;
+&lt;script&gt;displayEntries();&lt;/script&gt;</code></pre>
 {% endblock %}

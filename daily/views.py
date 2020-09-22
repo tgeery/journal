@@ -5,7 +5,7 @@ from .models import Journal
 
 def index(request):
     entries = Journal.objects.order_by('-date')
-    return render(request, 'daily/index.html', {'entries':entries})
+    return render(request, 'daily/index.html', {"entries":entries,"titles":[{"name":"test"},{"name":"test2"}]})
 
 def entry_1(request):
     entry = Journal.objects.get(pk=1)
@@ -202,3 +202,7 @@ def entry_48(request):
 def entry_49(request):
     entry = Journal.objects.get(pk=49)
     return render(request, 'daily/entry_49.html', {'entry':entry})
+
+def entry_50(request):
+    entry = Journal.objects.get(pk=50)
+    return render(request, 'daily/entry_50.html', {'entry':entry})
