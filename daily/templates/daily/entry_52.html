@@ -1,0 +1,43 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes the setup for a hello world c++ app using vs code on Ubuntu following <a href="https://code.visualstudio.com/docs/cpp/config-linux">this tutorial</a>.</p>
+<h3>Install VS Code</h3>
+<pre><code class='bash'>snap install code</code></pre>
+<h3>Create C++ App</h3>
+<pre><code class='bash'>mkdir hello
+cd hello</code></pre>
+<p>Create hello.cpp file.</p>
+<pre><code class='cpp'>#include <iostream>
+
+int main() {
+    std::cout << "Hello World!\n";
+    return 0;
+}</code></pre>
+<h3>Install VS Code Extensions</h3>
+<pre><code class="bash">code .</code></pre>
+<p>Use shortcut to install extensions: ctrl+shift+x<br/>
+install extension:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;ms-vscode.cpptools<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;acharluk.easy-cpp-projects</p>
+<h3>Build and Run Project</h3>
+<p>Select cpp file</br>
+Terminal->Configure Tasks...</br>
+Select 'C/C++:g++ build active file'</br>
+</br>
+Select cpp file</br>
+Terminal->Run Build Tasks...</br>
+Select 'C/C++:g++ build active file'</br>
+</br>
+Select cpp file</br>
+Run->Run Without Debugging</p>
+<h3>Verify App</h3>
+<p>Verify terminal prints:
+Hello World!</p>
+{% endblock %}
