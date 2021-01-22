@@ -1,0 +1,12 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes designing a simple paper airplane in Blender.</p>
+<img src="{% static 'images/blender_paper_airplane.gif'%}" alt="">
+{% endblock %}
