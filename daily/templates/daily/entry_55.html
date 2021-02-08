@@ -46,10 +46,10 @@ mkdir meta-mytest
 cd meta-mytest</code></pre>
 <p>Create mytest.h</p>
 <pre><code class="cpp">#if HAVE_CONFIG_H
-#include <config.h>
+#include &lt;config.h&gt;
 #endif</code></pre>
 <p>Create mytest.c</p>
-<pre><code class="cpp>#include <stdio.h>
+<pre><code class="cpp">#include &lt;stdio.h&gt;
 
 int main() {
     printf("Did this work? On Feb 2\n");
@@ -73,9 +73,23 @@ include_HEADERS = mytest.h
 
 bin_PROGRAMS = mytest
 mytest_SOURCES = mytest.c</code></pre>
+<p>If you want to test</p>
+<pre><code class="bash">libtoolize
+aclocal
+autoheader
+touch NEWS README AUTHORS ChangeLog
+automake --add-missing
+autoconf
+./configure
+make
+./MyTest</code></pre>
 <h1>Install to SD Card</h1>
 <pre><code class="bash">sudo apt-get install bmap-tools
 sudo umount /media/<user>/rootfs
 sudo bmaptool copy --bmap tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3-20210202104541.rootfs.wic.bmap tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3-20210202104541.rootfs.wic.bz2 /dev/sdb
-cp tmp/deploy/rpm/cortexa7t2hf_neon_vfpv4/mytest-1.0-r0.cortexa7t2hf_neon_vfpv4.rpm /media/<user>/rootfs/home/pi/</code></pre>
+cp tmp/deploy/rpm/cortexa7t2hf_neon_vfpv4/mytest-1.0-r0.cortexa7t2hf_neon_vfpv4.rpm /media/&lt;user&gt;/rootfs/home/pi/</code></pre>
+<p>Copy Custom RPM</p>
+<pre><code class="bash">cp tmp/deploy/rpm/cortexa7t2hf_neon_vfpv4/mytest-1.0-r0.cortexa7t2hf_neon_vfpv4.rpm /media/&lt;user&gt;/rootfs/home/pi/</code></pre>
+<p>Copy Custom Binary</p>
+<pre><code class="bash">cp tmp/work/cortexa7t2hf-neon-vfpv4-poky-linux-gnueabi/mytest/1.0-r0/image/usr/bin/ /media/&lt;user&gt;/rootfs/usr/bin/</code></pre>
 {% endblock %}
