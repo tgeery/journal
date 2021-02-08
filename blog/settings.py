@@ -25,7 +25,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.2.1', '192.168.0.15', 'geerbot-journal.herokuapp.com', 'geerbot.net', 'www.geerbot.net', 'localhost']
+ALLOWED_HOSTS = ['192.168.2.1', '192.168.0.15', '192.168.1.202', 'geerbot-journal.herokuapp.com', 'geerbot.net', 'www.geerbot.net', 'localhost']
 
 
 # Application definition
