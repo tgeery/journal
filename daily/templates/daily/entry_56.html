@@ -1,0 +1,19 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes adding the blender <a href="https://blender-addons.org/archipack-addon/">ArchiPak</a> and <a href="https://docs.blender.org/manual/en/latest/addons/add_mesh/archimesh.html">ArchiMesh</a>.</p>
+<h1>Add Plugins</h1>
+<p>Go to 'Edit' -> 'Preferences' -> 'Addons'. Search 'archipak' and click box. Then exit.</p>
+<img src="{% static 'images/blender_archipak_addons.png' %}" alt="">
+<h1>Add Mesh to Scene</h1>
+<p>Click shift + A -> M -> A. View import mesh from ArchiPak.</p>
+<img src="{% static 'images/blender_archipak_addmesh.png' %}" alt="">
+<h1>Make a Scene</h1>
+<img src="{% static 'images/blender_archipak_comination.png' %}" alt="">
+{% endblock %}
