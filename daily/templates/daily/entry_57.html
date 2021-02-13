@@ -1,0 +1,28 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a few modifications to yocto to build a rpi image that supports wifi.</p>
+<h1>Modify Config</h1>
+<p>cd poky/rpi-build</p>
+<p>Modify conf/local.conf</p>
+<pre><code class="bash">IMAGE_INSTALL_append = "linux-firmware bluez5 i2c-tools python3-smbus2 bridge-utils hostapd iptables wpa-supplicant"
+PACKAGE_EXCLUDE += "packagegroup-core-ssh-dropbear"
+CORE_IMAGE_EXTRA_INSTALL_append = "openssh dhcpd"
+</code></pre>
+<p>Modify conf/bblayers.conf</p>
+<pre><code class="bash">/home/&lt;user&gt;/develop/poky/meta-openembedded/meta-networking \</code></pre>
+<h1>Build and Update SD Card</h1>
+<pre><code class="bash">bitbake rpi-basic-image
+sudo dd if=tmp/deploy/images/raspberrypi3/rpi-basic-image-raspberrypi3-20210208004414.rootfs.rpi-sdimg of=/dev/sdb bs=1M && sync</code></pre>
+<h1>Run Board</h1>
+<p>Login with root and setup wifi</p>
+<pre><code class="bash">wpa_passphrase &lt;name&gt; &lt;password&gt; >> /etc/wpa_supplicant/wpa_supplicant.conf
+wpa_supplicant -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B udhcpc wlan0</code></pre>
+{% endblock %}
+
