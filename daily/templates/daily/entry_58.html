@@ -1,0 +1,22 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes creating an init script for Raspberry Pi to start wlan0 interface.</p>
+<h1>Create Script</h1>
+<p>/etc/init.d/wpa_if</p>
+<pre><code class="bash">#!/bin/sh
+/sbin/ifup wlan0</code></pre>
+<p>Enable executable</p>
+<pre><code class="bash">chmod +x /etc/init.d/wpa_if</code></pre>
+<p>Update RC scripts</p>
+<pre><code class="bash">update-rc.d wpa-if defaults</code></pre>
+<p>Reboot, and confirm</p>
+<pre><code class="bash">reboot</code></pre>
+{% endblock %}
+
