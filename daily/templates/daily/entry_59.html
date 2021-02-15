@@ -1,0 +1,22 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes setting up VS Code to ssh to a remote device and modify directory files.</p>
+<h1>Install Extension</h1>
+<p>Select Extensions Tab</p>
+<p>Search 'remote-ssh' and install</p>
+<h1>Add Device to Remote List</h1>
+<p>Select Remote Explorer Tab</p>
+<p>Click +, and add &lt;user&gt;@&lt;ip address&gt;</p>
+<p>Click the icon next to ip address and then type the password</p>
+<h1>Open Directory</h1>
+<p>Select File->Open Folder (go to project)</p>
+<p>Select Terminal->New Terminal (run code)</p>
+{% endblock %}
+
