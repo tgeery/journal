@@ -63,5 +63,6 @@ urlpatterns = [
 	path('entry_56', views.entry_56, name='entry_56'),
 	path('entry_57', views.entry_57, name='entry_57'),
 	path('entry_58', views.entry_58, name='entry_58'),
-	path('entry_59', views.entry_59, name='entry_59')
+	path('entry_59', views.entry_59, name='entry_59'),
+	path('entry_60', views.entry_60, name='entry_60')
 ]

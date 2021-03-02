@@ -1,0 +1,43 @@
+{% extends "generic.html" %}
+
+{% block header %}
+{{ entry.title }}
+{% endblock %}
+
+{% load static %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<p>This entry describes a simple python script to retrieve email from gmail following <a href='https://www.geeksforgeeks.org/python-fetch-your-gmail-emails-from-a-particular-user/'>this tutorial</a>.</p>
+<h1>Setup Google Account for 'Less secure app access'</h1>
+<p>Login to account and naviate to manage account. Select the 'Security' tab from list and scroll to 'Less secure app access' and turn it on.</p>
+<img src="{% static 'images/gmail_less_secure.png' %}" alt="">
+<h1>Write script using imaplib</h1>
+<pre><code class='python'>import imaplib, email
+
+
+con = imaplib.IMAP4_SSL('imap.gmail.com')
+if con:
+    con.login('user@gmail.com', 'password')
+    con.select('Inbox')
+    res,msg_ids = con.search(None,'TO','linux-kernel@vger.kernel.org')
+    if res == 'OK':
+        for n in str(msg_ids).split(' '):
+            if '[b' in n:
+                n = str(n.strip('[b\''))
+            else:
+                n = str(n.rstrip('\']'))
+            typ,ctnt = con.fetch(str(n),'(RFC822)')
+            subj = ''
+            frm = ''
+            if typ == 'OK':
+                for dat in ctnt:
+                    if type(dat) == tuple:
+                        fields = str(dat[1]).split('\\r')
+                        for field in fields:
+                            if 'Subject' in field:
+                                subj = field.strip('\nSubject:\t')
+                            if 'From' in field:
+                                frm = field.strip('\From:\t')
+                print(f'{frm} {subj}')</code></pre>
+{% endblock %}
+

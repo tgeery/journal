@@ -242,3 +242,7 @@ def entry_58(request):
 def entry_59(request):
 	entry = Journal.objects.get(pk=59)
 	return render(request, 'daily/entry_59.html', {'entry':entry})
+
+def entry_60(request):
+	entry = Journal.objects.get(pk=60)
+	return render(request, 'daily/entry_60.html', {'entry':entry})
